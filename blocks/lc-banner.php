@@ -2,7 +2,7 @@
 /**
  * Banner Block Template.
  *
- * @package lc-iology2025
+ * @package lc-eternal2025
  */
 
 defined( 'ABSPATH' ) || exit;

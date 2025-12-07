@@ -4,7 +4,7 @@
  *
  * This file defines and registers custom ACF blocks.
  *
- * @package lc-iology2025
+ * @package lc-eternal2025
  */
 
 /**

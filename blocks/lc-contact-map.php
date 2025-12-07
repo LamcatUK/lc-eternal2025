@@ -2,7 +2,7 @@
 /**
  * Block template for LC Contact Map.
  *
- * @package lc-iology2025
+ * @package lc-eternal2025
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -1,5 +1,5 @@
 {
-  "name": "lc-iology2025",
+  "name": "lc-eternal2025",
   "version": "1.2.0",
   "description": "Basic Child Theme for Understrap Theme Framework: https://github.com/understrap/understrap",
   "main": "index.js",
@@ -36,7 +36,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/understrap/lc-iology2025.git"
+    "url": "https://github.com/understrap/lc-eternal2025.git"
   },
   "keywords": [
     "wordpress",
@@ -48,7 +48,7 @@
   "author": "The Understrap Authors (https://github.com/understrap/understrap/graphs/contributors)",
   "license": "GPL-3.0",
   "bugs": {
-    "url": "https://github.com/understrap/lc-iology2025/issues"
+    "url": "https://github.com/understrap/lc-eternal2025/issues"
   },
   "homepage": "https://understrap.com",
   "devDependencies": {

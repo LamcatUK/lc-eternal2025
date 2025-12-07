@@ -4,7 +4,7 @@
  *
  * Copied from the original lc-iology theme to preserve LocalBusiness + opening hours schema.
  *
- * @package lc-iology2025
+ * @package lc-eternal2025
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -1,5 +1,5 @@
 {
-  "name": "lamcatuk/lc-iology2025",
+  "name": "lamcatuk/lc-eternal2025",
   "description": "Modern Understrap Child Theme for Iology",
   "type": "wordpress-theme",
   "license": "GPL-3.0",
@@ -10,7 +10,7 @@
     "bootstrap",
     "optician"
   ],
-  "homepage": "https://github.com/LamcatUK/lc-iology2025",
+  "homepage": "https://github.com/LamcatUK/lc-eternal2025",
   "authors": [
     {
       "name": "Lamcat",

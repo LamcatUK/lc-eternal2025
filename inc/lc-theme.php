@@ -4,7 +4,7 @@
  *
  * This file contains theme-specific functions and customizations for the LC Iology 2025 theme.
  *
- * @package lc-iology2025
+ * @package lc-eternal2025
  */
 
 defined( 'ABSPATH' ) || exit;

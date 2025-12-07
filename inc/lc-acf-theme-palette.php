@@ -2,7 +2,7 @@
 /**
  * Integrate ACF color picker fields with the theme's color palette.
  *
- * @package lc-iology2025
+ * @package lc-eternal2025
  */
 
 // Field name: background.

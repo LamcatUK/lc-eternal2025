@@ -5,7 +5,7 @@
  * This file contains various utility functions used throughout the theme,
  * including phone parsing, shortcodes, social media integrations, and more.
  *
- * @package lc-iology2025
+ * @package lc-eternal2025
  * @since 1.0.0
  */
 
@@ -741,7 +741,7 @@ function lc_cf7_honeypot_form_tag_handler( $tag ) {
             </label>
             %3$s
         </span>',
-		esc_html( ! empty( $atts['message'] ) ? $atts['message'] : __( 'If you are human, leave this field blank.', 'lc-iology2025' ) ),
+		esc_html( ! empty( $atts['message'] ) ? $atts['message'] : __( 'If you are human, leave this field blank.', 'lc-eternal2025' ) ),
 		$atts,
 		$validation_error
 	);
@@ -770,7 +770,7 @@ function lc_cf7_honeypot_validation_filter( $result, $tag ) {
 	$value = isset( $_POST[ $name ] ) ? sanitize_text_field( wp_unslash( $_POST[ $name ] ) ) : '';
 
 	if ( ! empty( $value ) ) {
-		$result->invalidate( $tag, __( 'Spam detected.', 'lc-iology2025' ) );
+		$result->invalidate( $tag, __( 'Spam detected.', 'lc-eternal2025' ) );
 	}
 
 	return $result;
