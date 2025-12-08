@@ -1,10 +1,10 @@
 {
-    "key": "group_635fc26c6ccaa",
-    "title": "LC Hero",
+    "key": "group_lc_text_image",
+    "title": "LC Text Image",
     "fields": [
         {
-            "key": "field_635fc26cb93b3",
-            "label": "LC Hero",
+            "key": "field_67c02eb49cc2b",
+            "label": "LC Text Image",
             "name": "",
             "aria-label": "",
             "type": "message",
@@ -21,7 +21,87 @@
             "esc_html": 0
         },
         {
-            "key": "field_635fc27bb93b4",
+            "key": "field_67c02eb4a095f",
+            "label": "Split",
+            "name": "split",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "50:50": "50:50",
+                "60:40": "60:40"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "allow_in_bindings": 0,
+            "layout": "horizontal",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_67c02eb4a452a",
+            "label": "Order",
+            "name": "order",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Text\/Image": "Text\/Image",
+                "Image\/Text": "Image\/Text"
+            },
+            "default_value": "",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "allow_in_bindings": 0,
+            "layout": "horizontal",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_67c02eb4a52e2",
+            "label": "Image Overlay",
+            "name": "image_overlay",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "33",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "Yes": "Yes"
+            },
+            "default_value": [
+                "Yes"
+            ],
+            "return_format": "value",
+            "allow_custom": 0,
+            "allow_in_bindings": 0,
+            "layout": "vertical",
+            "toggle": 0,
+            "save_custom": 0,
+            "custom_choice_button_text": "Add new choice"
+        },
+        {
+            "key": "field_67c02eb4a8d83",
             "label": "Title",
             "name": "title",
             "aria-label": "",
@@ -36,16 +116,17 @@
             },
             "default_value": "",
             "maxlength": "",
+            "allow_in_bindings": 0,
             "placeholder": "",
             "prepend": "",
             "append": ""
         },
         {
-            "key": "field_63adccd11c723",
-            "label": "Subtitle",
-            "name": "subtitle",
+            "key": "field_67c02eb4b3d27",
+            "label": "Content",
+            "name": "content",
             "aria-label": "",
-            "type": "text",
+            "type": "wysiwyg",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -55,15 +136,16 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
-            "placeholder": "",
-            "prepend": "",
-            "append": ""
+            "allow_in_bindings": 1,
+            "tabs": "all",
+            "toolbar": "full",
+            "media_upload": 1,
+            "delay": 0
         },
         {
-            "key": "field_635fc283b93b5",
-            "label": "CTA1",
-            "name": "cta1",
+            "key": "field_68307e959e58f",
+            "label": "CTA",
+            "name": "cta",
             "aria-label": "",
             "type": "link",
             "instructions": "",
@@ -74,89 +156,20 @@
                 "class": "",
                 "id": ""
             },
-            "return_format": "array"
+            "return_format": "array",
+            "allow_in_bindings": 0
         },
         {
-            "key": "field_635fc8a863897",
-            "label": "CTA1 Style",
-            "name": "cta1_primary",
-            "aria-label": "",
-            "type": "checkbox",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "50",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "Primary": "Primary"
-            },
-            "default_value": [
-                "Primary"
-            ],
-            "return_format": "value",
-            "allow_custom": 0,
-            "layout": "vertical",
-            "toggle": 0,
-            "save_custom": 0,
-            "custom_choice_button_text": "Add new choice"
-        },
-        {
-            "key": "field_635fc297b93b6",
-            "label": "CTA2",
-            "name": "cta2",
-            "aria-label": "",
-            "type": "link",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "40",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array"
-        },
-        {
-            "key": "field_635fc902a2ef5",
-            "label": "CTA2 Style",
-            "name": "cta2_primary",
-            "aria-label": "",
-            "type": "checkbox",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "20",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "Primary": "Primary"
-            },
-            "default_value": [
-                "Primary"
-            ],
-            "return_format": "value",
-            "allow_custom": 0,
-            "layout": "vertical",
-            "toggle": 0,
-            "save_custom": 0,
-            "custom_choice_button_text": "Add new choice"
-        },
-        {
-            "key": "field_63adce28e4228",
-            "label": "Background",
-            "name": "background",
+            "key": "field_67c02f32453aa",
+            "label": "Image",
+            "name": "image",
             "aria-label": "",
             "type": "image",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
-                "width": "",
+                "width": "50",
                 "class": "",
                 "id": ""
             },
@@ -169,23 +182,8 @@
             "max_height": "",
             "max_size": "",
             "mime_types": "",
-            "preview_size": "medium",
-            "choices": {
-                "white": "white",
-                "black": "black",
-                "ivory": "ivory",
-                "blue-50": "blue-50",
-                "blue-100": "blue-100",
-                "blue-400": "blue-400",
-                "blue-700": "blue-700",
-                "primary": "primary",
-                "primary-dark": "primary-dark",
-                "primary-light": "primary-light",
-                "secondary": "secondary",
-                "grey-100": "grey-100",
-                "grey-200": "grey-200"
-            },
-            "allow_null": 1
+            "allow_in_bindings": 0,
+            "preview_size": "thumbnail"
         }
     ],
     "location": [
@@ -193,7 +191,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/lc-hero"
+                "value": "acf\/lc-text-image"
             }
         ]
     ],
@@ -207,5 +205,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1764521738
+    "modified": 1765186047
 }

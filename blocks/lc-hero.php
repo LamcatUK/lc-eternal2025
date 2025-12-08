@@ -1,71 +1,115 @@
 <?php
 /**
- * Hero block template.
+ * Block template for LC Hero.
  *
  * @package lc-eternal2025
  */
 
 defined( 'ABSPATH' ) || exit;
 
-// Get banner settings from options.
-$banner_link        = get_field( 'banner_link', 'option' );
-$banner_url         = $banner_link['url'] ?? '';
-$show_banner_option = get_field( 'show_banner', 'option' );
-$is_banner_page     = $banner_url && is_page( basename( $banner_url ) );
+$images        = get_field( 'images' );
+$heading       = get_field( 'heading' );
+$strapline     = get_field( 'strapline' );
+$button_link_1 = get_field( 'button_1' );
+$button_link_2 = get_field( 'button_2' );
 
-// Add margin if we're on the banner page (banner won't show).
-$margin = $is_banner_page ? 'mb-5' : '';
+$size       = get_field( 'size' );
+$size_class = ( 'Short' === $size ) ? 'hero--short' : '';
 
+$block_id = 'lc-hero-' . $block['id'];
 ?>
-<!-- hero -->
-<section class="hero <?= esc_attr( $margin ); ?>"
-	style="background-image:url(<?= esc_url( wp_get_attachment_image_url( get_field( 'background' ), 'full' ) ); ?>)">
-	<div class="container-xl">
-		<div class="row mx-0">
-			<div class="col-md-7 my-auto">
-				<h1><?= esc_html( get_field( 'title' ) ); ?></h1>
-				<h2 class="mb-4">
-					<?= esc_html( get_field( 'subtitle' ) ); ?>
-					</h2>
+<section class="hero <?= esc_attr( $size_class ); ?>" id="<?php echo esc_attr( $block_id ); ?>">
+	<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
+		<div class="carousel-inner">
+			<?php
+			$active = 'active';
+			$c      = false;
+			if ( $images ) {
+				foreach ( $images as $index => $image ) {
+					?>
+					<div class="carousel-item <?= esc_attr( $active ); ?>">
+						<?=
+						wp_get_attachment_image(
+							$image['ID'],
+							'full',
+							false,
+							array(
+								'class' => 'd-block w-100 h-100',
+							),
+						);
+						?>
+					</div>
 					<?php
-					if ( get_field( 'cta1' ) ) {
-						$c     = get_field( 'cta1' );
-						$style = get_field( 'cta1_primary' ) ? 'btn-primary' : 'btn-secondary';
+					$active = '';
+					$c      = true;
+				}
+			}
+			if ( false === $c ) {
+				?>
+				<div class="carousel-item active">
+					<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-hero.jpg' ); ?>" class="d-block w-100 h-100" alt="Hero Image">
+				</div>
+				<?php
+			}
+			?>
+		</div>
+	</div>
+
+	<div class="hero__overlay"></div>
+
+	<div class="hero__content d-flex align-items-center">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-8 text-white">
+					<?php
+					$d = 0;
+					?>
+					<h1 data-aos="fade" data-aos-delay="<?= esc_attr( $d ); ?>" class="hero__title"><?= esc_html( $heading ); ?></h1>
+					<?php
+					$d += 100;
+					if ( $strapline ) {
 						?>
-					<a href="<?= esc_url( $c['url'] ); ?>"
-						target="<?= esc_attr( $c['target'] ); ?>"
-						class="btn <?= esc_attr( $style ); ?> me-2 mb-2"><?= esc_html( $c['title'] ); ?></a>
+					<h2 data-aos="fade" data-aos-delay="<?= esc_attr( $d ); ?>" class="hero__strapline"><?= esc_html( $strapline ); ?></h2>
 						<?php
-					}
-					if ( get_field( 'cta2' ) ) {
-						$style = get_field( 'cta2_primary' ) ? 'btn-primary' : 'btn-secondary';
-						$c     = get_field( 'cta2' );
-						?>
-					<a href="<?= esc_url( $c['url'] ); ?>"
-						target="<?= esc_attr( $c['target'] ); ?>"
-						class="btn <?= esc_attr( $style ); ?> mb-2"><?= esc_html( $c['title'] ); ?></a>
-						<?php
+						$d += 100;
 					}
 					?>
+			
+					<div class="hero__buttons d-flex flex-wrap gap-2 align-items-center mt-4">
+						<?php
+						if ( $button_link_1 ) {
+							?>
+						<span data-aos="fade" data-aos-delay="<?= esc_attr( $d ); ?>">
+							<a class="ep-button ep-button--primary hero__button mt-3"
+								href="<?= esc_url( $button_link_1['url'] ); ?>"
+								target="<?= esc_attr( $button_link_1['target'] ?? '_self' ); ?>">
+								<?= esc_html( $button_link_1['title'] ); ?>
+							</a>
+						</span>
+							<?php
+							$d += 100;
+						}
+						if ( $button_link_2 ) {
+							?>
+						<span data-aos="fade" data-aos-delay="<?= esc_attr( $d ); ?>">
+							<a class="ep-button ep-button--secondary ep-button--secondary-white hero__button mt-3"
+								href="<?= esc_url( $button_link_2['url'] ); ?>"
+								target="<?= esc_attr( $button_link_2['target'] ?? '_self' ); ?>">
+								<?= esc_html( $button_link_2['title'] ); ?>
+							</a>
+						</span>
+							<?php
+							$d += 100;
+						}
+						?>
+					</div>
+					<?php
+					if ( is_front_page() ) {
+						echo '<img data-aos="fade" data-aos-delay="' . esc_attr( $d ) . '" src="' . esc_url( get_stylesheet_directory_uri() . '/img/brcgs_cert_packaging_logo_rgb.webp' ) . '" alt="BRCGS Certification" class="hero__brcgs" />';
+					}
+					?>
+				</div>
 			</div>
 		</div>
 	</div>
 </section>
-<?php
-
-// Show banner if enabled and not on the banner page.
-if ( ! empty( $show_banner_option[0] ) && 'Yes' === $show_banner_option[0] && ! $is_banner_page ) {
-	?>
-<!-- banner -->
-<section class="banner py-1 mb-5">
-	<a href="<?= esc_url( $banner_url ? $banner_url : '#' ); ?>">
-		<div class="container-xl text-center d-md-flex justify-content-center align-items-center">
-			<div class="banner__content">
-				<?= wp_kses_post( get_field( 'banner_text', 'option' ) ); ?>
-			</div>
-		</div>
-	</a>
-</section>
-	<?php
-}
-?>

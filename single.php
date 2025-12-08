@@ -2,7 +2,7 @@
 /**
  * Template for displaying single blog posts.
  *
- * @package lc-str2025
+ * @package lc-eternal2025
  */
 
 defined( 'ABSPATH' ) || exit;

@@ -10,6 +10,9 @@
 defined( 'ABSPATH' ) || exit;
 
 require_once LC_THEME_DIR . '/inc/lc-utility.php';
+require_once LC_THEME_DIR . '/inc/lc-posttypes.php';
+require_once LC_THEME_DIR . '/inc/lc-taxonomies.php';
+require_once LC_THEME_DIR . '/inc/lc-products.php';
 require_once LC_THEME_DIR . '/inc/lc-block-usage.php';
 require_once LC_THEME_DIR . '/inc/lc-acf-theme-palette.php';
 require_once LC_THEME_DIR . '/inc/lc-schema.php';
@@ -108,6 +111,7 @@ function widgets_init() {
 			'primary_nav'  => 'Primary Nav',
 			'footer_menu1' => 'Footer Menu 1',
 			'footer_menu2' => 'Footer Menu 2',
+			'footer_menu3' => 'Footer Menu 3',
 		)
 	);
 
@@ -145,10 +149,30 @@ function lc_theme_enqueue() {
 
 	wp_deregister_script( 'jquery' );
 
-	wp_enqueue_style( 'splide-stylesheet', 'https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.4/css/splide.min.css', array(), null );
-	wp_enqueue_script( 'splide-scripts', 'https://cdnjs.cloudflare.com/ajax/libs/splidejs/4.1.4/js/splide.min.js', array(), null, true );
+	wp_enqueue_style( 'aos-style', 'https://unpkg.com/aos@2.3.1/dist/aos.css', array() ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+	wp_enqueue_script( 'aos', 'https://unpkg.com/aos@2.3.1/dist/aos.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+
+	wp_enqueue_script( 'lenis', 'https://unpkg.com/lenis@1.3.15/dist/lenis.min.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+	wp_enqueue_style( 'lenis-style', 'https://unpkg.com/lenis@1.3.15/dist/lenis.css', array() ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 }
 add_action( 'wp_enqueue_scripts', 'lc_theme_enqueue' );
+
+// Lenis smooth scroll.
+add_action(
+	'wp_footer',
+	function () {
+		?>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+	if (typeof Lenis === 'undefined') return;
+	const lenis = new Lenis({
+		autoRaf: true
+	});
+});
+</script>
+		<?php
+	}
+);
 
 // Performance: Remove WordPress global styles and SVG filters (WP 6.0+).
 remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
@@ -164,9 +188,9 @@ function wpb_login_logo() {
 <style type="text/css">
 	#login h1 a,
 	.login h1 a {
-		background-image: url(<?php echo esc_url( get_stylesheet_directory_uri() . '/img/iology-logo--colour.svg' ); ?>);
+		background-image: url(<?php echo esc_url( get_stylesheet_directory_uri() . '/img/ep-logo-2025.svg' ); ?>);
 		height: 64px;
-		width: 180px;
+		width: 300px;
 		background-size: contain;
 		background-repeat: no-repeat;
 		padding-bottom: 10px;

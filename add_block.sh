@@ -67,22 +67,22 @@ marker_comment="// INSERT NEW BLOCKS HERE."
 # Insert block registration code at the marker comment
 block_code=$(cat <<EOF
 
-        acf_register_block_type(
+          acf_register_block_type(
             array(
-                'name'            => '${block_slug}',
-                'title'           => __( '${block_name}' ),
-                'category'        => 'layout',
-                'icon'            => 'cover-image',
-                'render_template' => 'blocks/${block_kebab}.php',
-                'mode'            => 'edit',
-                'supports'        => array(
-                    'mode'      => false,
-                    'anchor'    => true,
-                    'className' => true,
-                    'align'     => true,
-                ),
+              'name'            => '${block_slug}',
+              'title'           => __( '${block_name}' ),
+              'category'        => 'layout',
+              'icon'            => 'cover-image',
+              'render_template' => 'blocks/${block_kebab}.php',
+              'mode'            => 'edit',
+              'supports'        => array(
+                'mode'      => false,
+                'anchor'    => true,
+                'className' => true,
+                'align'     => true,
+              ),
             )
-        );
+          );
 EOF
 )
 

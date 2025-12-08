@@ -17,22 +17,39 @@ function acf_blocks() {
 
 		// INSERT NEW BLOCKS HERE.
 
-        acf_register_block_type(
-            array(
-                'name'            => 'lc_service_card_slider',
-                'title'           => __( 'LC Service Card Slider' ),
-                'category'        => 'layout',
-                'icon'            => 'cover-image',
-                'render_template' => 'blocks/lc-service-card-slider.php',
-                'mode'            => 'edit',
-                'supports'        => array(
-                    'mode'      => false,
-                    'anchor'    => true,
-                    'className' => true,
-                    'align'     => true,
-                ),
-            )
-        );
+		acf_register_block_type(
+			array(
+				'name'            => 'lc_products_by_category',
+				'title'           => __( 'LC Products by Category' ),
+				'category'        => 'layout',
+				'icon'            => 'cover-image',
+				'render_template' => 'blocks/lc-products-by-category.php',
+				'mode'            => 'edit',
+				'supports'        => array(
+					'mode'      => false,
+					'anchor'    => true,
+					'className' => true,
+					'align'     => true,
+				),
+			)
+		);
+
+		acf_register_block_type(
+			array(
+				'name'            => 'lc_product_nav',
+				'title'           => __( 'LC Product Nav' ),
+				'category'        => 'layout',
+				'icon'            => 'cover-image',
+				'render_template' => 'blocks/lc-product-nav.php',
+				'mode'            => 'edit',
+				'supports'        => array(
+					'mode'      => false,
+					'anchor'    => true,
+					'className' => true,
+					'align'     => true,
+				),
+			)
+		);
 
 		acf_register_block_type(
 			array(
@@ -130,21 +147,11 @@ function acf_blocks() {
 				'supports'        => array(
 					'mode'   => false,
 					'anchor' => true,
-				),
-			)
-		);
-
-		acf_register_block_type(
-			array(
-				'name'            => 'lc_banner',
-				'title'           => 'LC Banner',
-				'category'        => 'layout',
-				'icon'            => 'excerpt-view',
-				'render_template' => 'blocks/lc-banner.php',
-				'mode'            => 'edit',
-				'supports'        => array(
-					'mode'   => false,
-					'anchor' => true,
+					'color'  => array(
+						'text'       => true,
+						'background' => true,
+						'gradients'  => false,
+					),
 				),
 			)
 		);
@@ -196,21 +203,6 @@ function acf_blocks() {
 
 		acf_register_block_type(
 			array(
-				'name'            => 'lc_button_bar',
-				'title'           => 'LC Button Bar',
-				'category'        => 'layout',
-				'icon'            => 'excerpt-view',
-				'render_template' => 'blocks/lc-button-bar.php',
-				'mode'            => 'edit',
-				'supports'        => array(
-					'mode'   => false,
-					'anchor' => true,
-				),
-			)
-		);
-
-		acf_register_block_type(
-			array(
 				'name'            => 'lc_contact_map',
 				'title'           => 'LC Contact & Map',
 				'category'        => 'layout',
@@ -224,20 +216,6 @@ function acf_blocks() {
 			)
 		);
 
-		acf_register_block_type(
-			array(
-				'name'            => 'lc_brand_grid',
-				'title'           => 'LC Brand Grid',
-				'render_template' => 'blocks/lc-brand-grid.php',
-				'category'        => 'layout',
-				'icon'            => 'excerpt-view',
-				'mode'            => 'edit',
-				'supports'        => array(
-					'mode'   => false,
-					'anchor' => true,
-				),
-			)
-		);
 	}
 }
 add_action( 'acf/init', 'acf_blocks' );

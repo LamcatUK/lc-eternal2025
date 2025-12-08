@@ -1,10 +1,10 @@
 {
-    "key": "group_lc_service_card_slider",
-    "title": "LC Service Card Slider",
+    "key": "group_lc_products_by_category",
+    "title": "LC Products by Category",
     "fields": [
         {
-            "key": "field_lc_service_card_slider_title",
-            "label": "LC Service Card Slider",
+            "key": "field_lc_products_by_category_title",
+            "label": "LC Products by Category",
             "name": "",
             "aria-label": "",
             "type": "message",
@@ -21,11 +21,11 @@
             "new_lines": "wpautop"
         },
         {
-            "key": "field_6932ccbe003d8",
-            "label": "Services",
-            "name": "services",
+            "key": "field_6936a5dfda4e1",
+            "label": "Category",
+            "name": "category",
             "aria-label": "",
-            "type": "checkbox",
+            "type": "taxonomy",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -34,21 +34,17 @@
                 "class": "",
                 "id": ""
             },
-            "choices": {
-                "eye_tests": "Eye Tests",
-                "frames": "Glasses Frames & Lenses",
-                "contact_lenses": "Contact Lenses",
-                "nhs": "NHS Registration",
-                "childrens": "Children's Eye Care"
-            },
-            "default_value": [],
-            "return_format": "value",
-            "allow_custom": 0,
+            "taxonomy": "product_category",
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "field_type": "select",
+            "allow_null": 0,
             "allow_in_bindings": 0,
-            "layout": "horizontal",
-            "toggle": 0,
-            "save_custom": 0,
-            "custom_choice_button_text": "Add new choice"
+            "bidirectional": 0,
+            "multiple": 0,
+            "bidirectional_target": []
         }
     ],
     "location": [
@@ -56,7 +52,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/lc-service-card-slider"
+                "value": "acf\/lc-products-by-category"
             }
         ]
     ],
@@ -70,5 +66,5 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1764938895
+    "modified": 1765189111
 }

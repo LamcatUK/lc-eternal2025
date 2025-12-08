@@ -15,10 +15,10 @@
 }
 
 main {
-  margin-top: 62px;
+  margin-top: var(--h-top-mobile);
   // margin-top: 113px;
   @media (min-width: 1200px) {
-    margin-top: 90px;
+    margin-top: var(--h-top);
   }
   position: relative;
 }

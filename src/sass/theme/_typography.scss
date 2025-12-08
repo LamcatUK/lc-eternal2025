@@ -1,112 +1,92 @@
-/* montserrat-regular - latin */
 @font-face {
-    font-family: 'Montserrat';
+    font-family: 'Satoshi';
     font-style: normal;
-    font-weight: 400;
+    font-weight: 300;
     font-display: swap;
     src: local(''),
-         url('../fonts/montserrat-v25-latin-regular.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('../fonts/montserrat-v25-latin-regular.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+         url('../fonts/Satoshi-Light.woff2') format('woff2'); /* Chrome 26+, Opera 23+, Firefox 39+ */
 }
-/* montserrat-600 - latin */
 @font-face {
-    font-family: 'Montserrat';
+    font-family: 'Satoshi';
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     font-display: swap;
     src: local(''),
-         url('../fonts/montserrat-v25-latin-600.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('../fonts/montserrat-v25-latin-600.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+         url('../fonts/Satoshi-Bold.woff2') format('woff2'); /* Chrome 26+, Opera 23+, Firefox 39+ */
 }
-/* montserrat-800 - latin */
-  @font-face {
-    font-family: 'Montserrat';
+@font-face {
+    font-family: 'Satoshi';
     font-style: normal;
-    font-weight: 800;
+    font-weight: 900;
     font-display: swap;
     src: local(''),
-         url('../fonts/montserrat-v25-latin-800.woff2') format('woff2'), /* Chrome 26+, Opera 23+, Firefox 39+ */
-         url('../fonts/montserrat-v25-latin-800.woff') format('woff'); /* Chrome 6+, Firefox 3.6+, IE 9+, Safari 5.1+ */
+         url('../fonts/Satoshi-Black.woff2') format('woff2'); /* Chrome 26+, Opera 23+, Firefox 39+ */
 }
 
 html {
     font-size: 18px;
-    color: $black;
+    color: var(--col-black);
 }
 
 body {
-    font-family: 'Montserrat', Calibri, 'Trebuchet MS', sans-serif;
-    font-weight: 400;
+    font-family: var(--ff-base);
+    font-weight: var(--fw-regular);
     font-style: normal;
-    font-size: 1rem;
+    font-size: var(--fs-400);
     letter-spacing: 0;
     line-height: 1.3;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    color: $black;
+    color: var(--col-black);
 }
 
 .fw-normal {
-    font-weight: 400;
+    font-weight: var(--fw-light);
 }
+.fw-bold {
+    font-weight: var(--fw-bold);
+}
+.fw-black {
+    font-weight: var(--fw-black);
+}
+
 h1, .h1, h2, .h2, h3, .h3, h4, .h4{
-    font-family: 'Montserrat', Calibri, 'Trebuchet MS', sans-serif;
     text-wrap: balance;
 }
 
 .h99 {
-    font-family: 'Montserrat', Calibri, 'Trebuchet MS', sans-serif;
-    font-weight: 800;
+    font-weight: 900;
 }
 
 h1, .h1 {
-    // font-size: 2.667rem;
-    // font-size: 3.556rem;
-    font-weight: 800;
-    font-size: 2rem;
-    font-size: clamp(2rem, 0.75rem + 4vw, 3rem);
-    // font-size: clamp(2rem, 1.5554285714285714rem + 2.222857142857143vw, 3.556rem);
+    font-weight: var(--fw-black);
+    font-size: var(--fw-1000);
 }
 
 h2, .h2 {
-    font-weight: 600;
-    span {
-        font-weight: 800;
-    }
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-800);
 }
 h3, .h3 {
-    font-size: 1.2rem;
-    font-weight: 600;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-800);
 }
 h4, .h4 {
-    font-size: 1rem;
-    font-weight: 600;
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-700);
+}
+h5, .h5 {
+    font-weight: var(--fw-bold);
+    font-size: var(--fs-700);
 }
 
-
-
-// h2, .h2 {
-//     font-size: 600px;
-// }
-
-// h3, .h3 {
-//     font-size: 28px;
-//     span {
-//         font-size: 22px;
-//     }
-// }
-
 strong {
-    font-weight: 600;
+    font-weight: var(--fw-bold);
 }
 
 .smaller {
-    font-size: var(--fs-350);
-}
-.smallest {
     font-size: var(--fs-300);
 }
-
-.fs-7 {
-    font-size: 0.8rem!important;
+.smallest {
+    font-size: var(--fs-200);
 }
