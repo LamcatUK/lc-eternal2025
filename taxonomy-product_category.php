@@ -10,8 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 get_header();
 
-$term                = get_queried_object();
-$term_featured_image = get_field( 'featured_image', $term );
+$term = get_queried_object();
 
 $products = new WP_Query(
 	array(
@@ -37,11 +36,7 @@ $products = new WP_Query(
 		<div id="heroCarousel" class="carousel slide carousel-fade" data-bs-ride="carousel">
 			<div class="carousel-inner">
 				<div class="carousel-item active">
-					<?php if ( ! empty( $term_featured_image['ID'] ) ) : ?>
-						<?= wp_get_attachment_image( $term_featured_image['ID'], 'full', false, array( 'class' => 'd-block w-100 h-100' ) ); ?>
-					<?php else : ?>
-						<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-hero.jpg' ); ?>" class="d-block w-100 h-100" alt="<?= esc_attr( $term->name ); ?>">
-					<?php endif; ?>
+					<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-hero.jpg' ); ?>" class="d-block w-100 h-100" alt="<?= esc_attr( $term->name ); ?>">
 				</div>
 			</div>
 		</div>
