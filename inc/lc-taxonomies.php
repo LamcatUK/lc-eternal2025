@@ -25,6 +25,10 @@ function lc_register_taxonomies() {
 			'show_ui'           => true,
 			'show_admin_column' => true,
 			'show_in_rest'      => true,
+			'rewrite'           => array(
+				'slug'       => 'products',
+				'with_front' => false,
+			),
 		)
 	);
 }
