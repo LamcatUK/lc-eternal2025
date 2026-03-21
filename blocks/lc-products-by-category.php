@@ -50,6 +50,7 @@ $products = new WP_Query(
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
+							<th style="width:66px;"></th>
 							<th>Product Code</th>
 							<th>Description</th>
 							<th>Material</th>
@@ -62,18 +63,25 @@ $products = new WP_Query(
 						<?php
 						while ( $products->have_posts() ) {
 							$products->the_post();
-							$product_id = get_the_ID();
+							$product_id  = get_the_ID();
 							$description = get_field( 'description', $product_id );
-							$material = get_field( 'material', $product_id );
-							$size = get_field( 'size', $product_id );
-							$colour = get_field( 'colour', $product_id );
+							$material    = get_field( 'material', $product_id );
+							$size        = get_field( 'size', $product_id );
+							$colour      = get_field( 'colour', $product_id );
 							?>
 							<tr>
+								<td>
+									<?php if ( has_post_thumbnail() ) : ?>
+										<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'thumbnail' ) ); ?>" width="50" height="50" style="object-fit:cover;border-radius:4px;" alt="<?= esc_attr( get_the_title() ); ?>">
+									<?php else : ?>
+										<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" width="50" height="50" style="object-fit:cover;border-radius:4px;" alt="">
+									<?php endif; ?>
+								</td>
 								<td><strong><?= esc_html( get_the_title() ); ?></strong></td>
 								<td><?= wp_kses_post( wp_trim_words( $description, 15 ) ); ?></td>
-								<td><?= esc_html( $material ?: '-' ); ?></td>
-								<td><?= esc_html( $size ?: '-' ); ?></td>
-								<td><?= esc_html( $colour ?: '-' ); ?></td>
+								<td><?= esc_html( $material ? $material : '-' ); ?></td>
+								<td><?= esc_html( $size ? $size : '-' ); ?></td>
+								<td><?= esc_html( $colour ? $colour : '-' ); ?></td>
 								<td>
 									<a href="<?= esc_url( get_permalink() ); ?>" class="btn btn-sm btn-outline-primary">
 										View Details

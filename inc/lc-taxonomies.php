@@ -26,7 +26,7 @@ function lc_register_taxonomies() {
 			'show_admin_column' => true,
 			'show_in_rest'      => true,
 			'rewrite'           => array(
-				'slug'       => 'products',
+				'slug'       => 'type',
 				'with_front' => false,
 			),
 		)

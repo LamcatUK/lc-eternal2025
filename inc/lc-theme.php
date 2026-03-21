@@ -329,3 +329,19 @@ function whatsapp( $atts ) {
 	return ob_get_clean();
 }
 add_shortcode( 'whatsapp_button', 'whatsapp' );
+
+/**
+ * Show all products on the product archive and taxonomy pages.
+ *
+ * @param WP_Query $query The current query.
+ */
+function lc_show_all_products_on_archive( WP_Query $query ): void {
+	if (
+		! is_admin() &&
+		$query->is_main_query() &&
+		( is_post_type_archive( 'product' ) || is_tax( 'product_category' ) )
+	) {
+		$query->set( 'posts_per_page', -1 );
+	}
+}
+add_action( 'pre_get_posts', 'lc_show_all_products_on_archive' );
