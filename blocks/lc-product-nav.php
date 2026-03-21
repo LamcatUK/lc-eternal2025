@@ -7,12 +7,13 @@
 
 defined( 'ABSPATH' ) || exit;
 
-// get children of page '/products/'.
-$product_pages = get_pages(
+// Get product categories for navigation cards.
+$product_categories = get_terms(
 	array(
-		'child_of'    => get_page_by_path( 'products' )->ID,
-		'sort_column' => 'menu_order',
-		'sort_order'  => 'ASC',
+		'taxonomy'   => 'product_category',
+		'hide_empty' => true,
+		'orderby'    => 'name',
+		'order'      => 'ASC',
 	)
 );
 
@@ -23,13 +24,24 @@ $product_pages = get_pages(
 		<nav class="product-nav__inner" aria-label="Product Navigation">
 			<div class="row">
 				<?php
-				foreach ( $product_pages as $page ) {
+				foreach ( $product_categories as $product_category ) {
+					$category_link  = get_term_link( $product_category );
+					$category_image = get_field( 'featured_image', $product_category );
+
+					if ( is_wp_error( $category_link ) ) {
+						continue;
+					}
+
 					?>
 				<div class="col-md-4">
-					<a class="product-nav__link" href="<?php echo esc_url( get_permalink( $page->ID ) ); ?>">
-						<?= get_the_post_thumbnail( $page->ID, 'large'); ?>
+					<a class="product-nav__link" href="<?php echo esc_url( $category_link ); ?>">
+						<?php if ( ! empty( $category_image['ID'] ) ) : ?>
+							<?= wp_get_attachment_image( $category_image['ID'], 'large' ); ?>
+						<?php else : ?>
+							<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" alt="<?= esc_attr( $product_category->name ); ?>">
+						<?php endif; ?>
 						<div class="product-nav__overlay"></div>
-						<h3><?php echo esc_html( get_the_title( $page->ID ) ); ?></h3>
+						<h3><?php echo esc_html( $product_category->name ); ?></h3>
 					</a>
 				</div>
 					<?php
