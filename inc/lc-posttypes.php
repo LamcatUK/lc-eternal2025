@@ -26,7 +26,7 @@ function lc_register_post_types() {
 			'public'              => true,
 			'has_archive'         => true,
 			'rewrite'             => array(
-				'slug'       => 'product',
+				'slug'       => 'products',
 				'with_front' => false,
 			),
 			'show_in_rest'        => true,

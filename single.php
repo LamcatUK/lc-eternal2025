@@ -118,8 +118,6 @@ get_header();
 					}
 					?>
 					<div class="sidebar-insights__cta mt-3 d-none d-lg-block">
-						<div class="h4 mb-3">Book Your Eye Test Today</div>
-						<a href="/book-appointment/" target="_self" class="btn btn-primary mb-3">Book an Appointment</a>
 						<div class="d-flex gap-3 justify-content-center align-items-center phone-email">
 							<a href="<?= esc_url( 'tel:' . parse_phone( get_field( 'phone', 'option' ) ) ); ?>" class="button button-primary"><i class="fas fa-phone"></i> Call</a>
 							<a href="<?= esc_url( 'mailto:' . antispambot( get_field( 'email', 'option' ) ) ); ?>" class="button button-primary"><i class="fas fa-paper-plane"></i> Email</a>
