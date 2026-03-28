@@ -12,6 +12,9 @@ get_header();
 
 $term = get_queried_object();
 
+$term_content = get_field( 'content', $term );
+$term_faqs    = get_field( 'faq', $term );
+
 $products = new WP_Query(
 	array(
 		'post_type'      => 'product',
@@ -52,17 +55,33 @@ $products = new WP_Query(
 		</div>
 	</section>
 
+	<?php
+	if ( $term_content ) {
+		?>
+		<section class="term-content pt-5">
+			<div class="container">
+				<?= wp_kses_post( wpautop( $term_content ) ); ?>
+			</div>
+		</section>
+		<?php
+	}
+	?>
+
 	<!-- Products -->
 	<section class="products-by-category py-5">
 		<div class="container">
-
-			<?php if ( $term->description ) : ?>
+			<h2 class="mb-4">Products in <?= esc_html( $term->name ); ?></h2>
+			<?php
+			if ( $term->description ) {
+				?>
 				<div class="category-description mb-4">
 					<?= wp_kses_post( wpautop( $term->description ) ); ?>
 				</div>
-			<?php endif; ?>
+				<?php
+			}
 
-			<?php if ( $products->have_posts() ) : ?>
+			if ( $products->have_posts() ) {
+				?>
 				<div class="row g-3 mb-4 align-items-end">
 					<div class="col-md-4">
 						<label for="skuSearch" class="form-label">Search by Product Code</label>
@@ -125,12 +144,52 @@ $products = new WP_Query(
 						</tbody>
 					</table>
 				</div>
-			<?php else : ?>
+				<?php
+			} else {
+				?>
 				<p>No products found in this category.</p>
-			<?php endif; ?>
+				<?php
+			}
+			?>
 
 		</div>
 	</section>
+
+	<!-- FAQ CONTENT HERE -->
+	<?php
+	if ( ! empty( $term_faqs ) && is_array( $term_faqs ) ) {
+		?>
+		<section class="faq pb-5">
+			<div class="container-xl">
+				<h2>Frequently Asked Questions</h2>
+				<div itemscope="" itemtype="https://schema.org/FAQPage" id="faqs" class="accordion accordion-flush">
+					<?php foreach ( $term_faqs as $index => $faq ) : ?>
+						<?php
+						$question = isset( $faq['question'] ) ? $faq['question'] : '';
+						$answer   = isset( $faq['answer'] ) ? $faq['answer'] : '';
+						if ( '' === trim( (string) $question ) && '' === trim( (string) $answer ) ) {
+							continue;
+						}
+						?>
+						<div class="faq__card accordion-item" itemscope="" itemprop="mainEntity" itemtype="https://schema.org/Question">
+							<div class="accordion-header" id="heading<?= esc_attr( $index ); ?>">
+								<button class="accordion-button collapsed question" type="button" data-bs-toggle="collapse" itemprop="name" data-bs-target="#faq-<?= esc_attr( $index ); ?>" aria-expanded="false">
+									<h3><?= esc_html( $question ); ?></h3>
+								</button>
+							</div>
+							<div class="answer accordion-collapse collapse" id="faq-<?= esc_attr( $index ); ?>" itemscope="" data-bs-parent="#faqs" itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+								<div class="answer__inner" itemprop="text">
+									<?= wp_kses_post( $answer ); ?>
+								</div>
+							</div>
+						</div>
+					<?php endforeach; ?>
+				</div>
+			</div>
+		</section>
+		<?php
+	}
+	?>
 
 </main>
 
