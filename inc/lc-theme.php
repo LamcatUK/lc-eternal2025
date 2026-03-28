@@ -333,9 +333,59 @@ add_action(
 		.block-editor-page #wpwrap {
 		overflow-y: auto !important;
 		}
-   </style>';
+    </style>';
 	}
 );
+
+/**
+ * Expand the product category term editor and hide the native description field.
+ *
+ * @return void
+ */
+function lc_product_category_term_admin_styles() {
+	if ( ! function_exists( 'get_current_screen' ) ) {
+		return;
+	}
+
+	$screen = get_current_screen();
+
+	if ( ! $screen || 'product_category' !== $screen->taxonomy ) {
+		return;
+	}
+
+	echo '<style>
+		/* Make the term editor full width */
+		body.term-php .wrap,
+		body.edit-tags-php .wrap,
+		body.term-php #col-container,
+		body.edit-tags-php #col-container,
+		body.term-php #col-left,
+		body.edit-tags-php #col-left,
+		body.term-php #col-right,
+		body.edit-tags-php #col-right,
+		body.term-php .form-wrap,
+		body.edit-tags-php .form-wrap,
+		body.term-php form#edittag,
+		body.edit-tags-php form#edittag {
+			max-width: none !important;
+			width: 100% !important;
+		}
+
+		body.term-php form#edittag,
+		body.edit-tags-php form#edittag {
+			display: block;
+		}
+
+		/* Hide the native description field; use the ACF Content field instead. */
+		body.term-php .term-description-wrap,
+		body.edit-tags-php .term-description-wrap,
+		body.term-php .form-field.term-description-wrap,
+		body.edit-tags-php .form-field.term-description-wrap {
+			display: none !important;
+		}
+	</style>';
+}
+add_action( 'admin_head', 'lc_product_category_term_admin_styles' );
 
 /**
  * WhatsApp button shortcode.
