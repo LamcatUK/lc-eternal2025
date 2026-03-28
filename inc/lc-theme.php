@@ -139,8 +139,8 @@ function lc_theme_enqueue() {
 	// wp_enqueue_script('lightbox-scripts', get_stylesheet_directory_uri() . '/js/lightbox-plus-jquery.min.js', array(), $the_theme->get('Version'), true);
 	// wp_enqueue_script('jquery', 'https://code.jquery.com/jquery-3.6.3.min.js', array(), null, true);
 	// wp_enqueue_script('parallax', get_stylesheet_directory_uri() . '/js/parallax.min.js', array('jquery'), null, true);
-	// wp_enqueue_style( 'splide-stylesheet', 'https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css', array(), null );
-	// wp_enqueue_script( 'splide-scripts', 'https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js', array(), null, true );
+	wp_enqueue_style( 'splide-stylesheet', 'https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/css/splide.min.css', array(), null ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
+	wp_enqueue_script( 'splide-scripts', 'https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.3/dist/js/splide.min.js', array(), null, true ); // phpcs:ignore WordPress.WP.EnqueuedResourceParameters.MissingVersion
 	// wp_enqueue_style('lightbox-stylesheet', get_stylesheet_directory_uri() . '/css/lightbox.min.css', array(), $the_theme->get('Version'));
 	// wp_enqueue_script('lightbox-scripts', get_stylesheet_directory_uri() . '/js/lightbox.min.js', array(), $the_theme->get('Version'), true);
 	// wp_enqueue_style( 'glightbox-style', 'https://cdnjs.cloudflare.com/ajax/libs/glightbox/3.3.1/css/glightbox.min.css', array(), $the_theme->get( 'Version' ) );
@@ -177,6 +177,42 @@ document.addEventListener('DOMContentLoaded', function () {
 // Performance: Remove WordPress global styles and SVG filters (WP 6.0+).
 remove_action( 'wp_enqueue_scripts', 'wp_enqueue_global_styles' );
 remove_action( 'wp_body_open', 'wp_global_styles_render_svg_filters' );
+
+/**
+ * Register custom Lamcat dashboard widget.
+ *
+ * @return void
+ */
+function register_lc_dashboard_widget() {
+	wp_add_dashboard_widget(
+		'lc_dashboard_widget',
+		'Lamcat',
+		'lc_dashboard_widget_display',
+	);
+}
+add_action( 'wp_dashboard_setup', 'register_lc_dashboard_widget' );
+
+/**
+ * Display the Lamcat dashboard widget content.
+ *
+ * @return void
+ */
+function lc_dashboard_widget_display() {
+	?>
+	<div style="display: flex; align-items: center; justify-content: space-around;">
+		<img style="width: 50%;"
+			src="<?= esc_url( get_stylesheet_directory_uri() . '/img/lc-full.jpg' ); ?>" alt="Lamcat logo">
+		<a class="button button-primary" target="_blank" rel="noopener nofollow noreferrer"
+			href="mailto:hello@lamcat.co.uk/">Contact</a>
+	</div>
+	<div>
+		<p><strong>Thanks for choosing Lamcat!</strong></p>
+		<hr>
+		<p>Got a problem with your site, or want to make some changes and need us to take a look for you?</p>
+		<p>Use the link above to get in touch and we'll get back to you ASAP.</p>
+	</div>
+	<?php
+}
 
 /*------------ LOGIN BITS -----*/
 

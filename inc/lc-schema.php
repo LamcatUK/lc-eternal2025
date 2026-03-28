@@ -132,21 +132,6 @@ function lc_output_schema() {
 		echo wp_json_encode( $schema, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
 		echo '</script>';
 
-		$aggregate_rating = array(
-			'@context'     => 'https://schema.org',
-			'@type'        => 'AggregateRating',
-			'itemReviewed' => array(
-				'@id' => 'https://iology.co.uk/#business',
-			),
-			'ratingValue'  => (float) get_field( 'ratingvalue', 'options' ),
-			'reviewCount'  => (int) get_field( 'reviewcount', 'options' ),
-			'bestRating'   => (int) get_field( 'bestrating', 'options' ),
-			'worstRating'  => (int) get_field( 'worstrating', 'options' ),
-		);
-		echo '<script type="application/ld+json">';
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-		echo wp_json_encode( $aggregate_rating, JSON_UNESCAPED_SLASHES | JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
-		echo '</script>';
 	}
 
 	// Check for custom schema first (works on all pages including contact).

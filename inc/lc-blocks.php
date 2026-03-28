@@ -53,6 +53,23 @@ function acf_blocks() {
 
 		acf_register_block_type(
 			array(
+				'name'            => 'lc_popular_products',
+				'title'           => __( 'LC Popular Products' ),
+				'category'        => 'layout',
+				'icon'            => 'cover-image',
+				'render_template' => 'blocks/lc-popular-products.php',
+				'mode'            => 'edit',
+				'supports'        => array(
+					'mode'      => false,
+					'anchor'    => true,
+					'className' => true,
+					'align'     => true,
+				),
+			)
+		);
+
+		acf_register_block_type(
+			array(
 				'name'            => 'lc_latest_insights',
 				'title'           => __( 'LC Latest Insights' ),
 				'category'        => 'layout',
@@ -152,21 +169,6 @@ function acf_blocks() {
 						'background' => true,
 						'gradients'  => false,
 					),
-				),
-			)
-		);
-
-		acf_register_block_type(
-			array(
-				'name'            => 'lc_testimonials',
-				'title'           => 'LC Testimonials',
-				'category'        => 'layout',
-				'icon'            => 'excerpt-view',
-				'render_template' => 'blocks/lc-testimonials.php',
-				'mode'            => 'edit',
-				'supports'        => array(
-					'mode'   => false,
-					'anchor' => true,
 				),
 			)
 		);

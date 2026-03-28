@@ -35,6 +35,323 @@ function split_lines( $content ) {
 	return $content;
 }
 
+/**
+ * Load, augment, and sanitize an SVG from attachment ID or local file path.
+ *
+ * @param int|string   $svg_source Attachment ID or local SVG file path/URL.
+ * @param string|array $classes    Optional CSS class or classes to add to the root SVG element.
+ * @param string|int   $width      Optional width attribute for the root SVG element.
+ * @param string|int   $height     Optional height attribute for the root SVG element.
+ * @return string Sanitized SVG markup, or an empty string if unavailable.
+ */
+function lc_sanitise_svg( $svg_source, $classes = '', $width = '', $height = '' ) {
+	$is_dimension = static function ( $value ) {
+		if ( ! is_scalar( $value ) ) {
+			return false;
+		}
+
+		$value = trim( (string) $value );
+
+		if ( '' === $value ) {
+			return false;
+		}
+
+		return 1 === preg_match( '/^\d+(?:\.\d+)?(?:px|em|rem|%|vh|vw|vmin|vmax|pt|pc|cm|mm|in)?$/i', $value );
+	};
+
+	$sanitize_dimension = static function ( $value ) {
+		if ( ! is_scalar( $value ) ) {
+			return '';
+		}
+
+		$value = trim( (string) $value );
+
+		if ( '' === $value ) {
+			return '';
+		}
+
+		if ( 1 === preg_match( '/^\d+(?:\.\d+)?(?:px|em|rem|%|vh|vw|vmin|vmax|pt|pc|cm|mm|in)?$/i', $value ) ) {
+			return $value;
+		}
+
+		return '';
+	};
+
+	if ( ! is_array( $classes ) && $is_dimension( $classes ) ) {
+		if ( '' === $width && '' === $height ) {
+			$width   = $classes;
+			$classes = '';
+		} elseif ( '' === $height && $is_dimension( $width ) ) {
+			$height  = $width;
+			$width   = $classes;
+			$classes = '';
+		}
+	}
+
+	$width  = $sanitize_dimension( $width );
+	$height = $sanitize_dimension( $height );
+
+	if ( empty( $svg_source ) ) {
+		return '';
+	}
+
+	$file_path = '';
+
+	if ( is_numeric( $svg_source ) ) {
+		$attachment_id = (int) $svg_source;
+
+		if ( 'image/svg+xml' !== get_post_mime_type( $attachment_id ) ) {
+			return '';
+		}
+
+		$file_path = get_attached_file( $attachment_id );
+	} elseif ( is_string( $svg_source ) ) {
+		$file_path = trim( $svg_source );
+
+		$theme_uri = get_stylesheet_directory_uri();
+		if ( 0 === strpos( $file_path, $theme_uri ) ) {
+			$file_path = get_stylesheet_directory() . substr( $file_path, strlen( $theme_uri ) );
+		}
+
+		$parent_theme_uri = get_template_directory_uri();
+		if ( 0 === strpos( $file_path, $parent_theme_uri ) ) {
+			$file_path = get_template_directory() . substr( $file_path, strlen( $parent_theme_uri ) );
+		}
+
+		if ( ! preg_match( '#^([a-zA-Z]:[\\/]|/)#', $file_path ) ) {
+			$theme_relative = ltrim( $file_path, '/\\' );
+			$child_path     = trailingslashit( get_stylesheet_directory() ) . $theme_relative;
+			$parent_path    = trailingslashit( get_template_directory() ) . $theme_relative;
+
+			if ( file_exists( $child_path ) ) {
+				$file_path = $child_path;
+			} elseif ( file_exists( $parent_path ) ) {
+				$file_path = $parent_path;
+			}
+		}
+
+		if ( 'svg' !== strtolower( (string) pathinfo( $file_path, PATHINFO_EXTENSION ) ) ) {
+			return '';
+		}
+	} else {
+		return '';
+	}
+
+	if ( empty( $file_path ) || ! file_exists( $file_path ) ) {
+		return '';
+	}
+
+	$svg_markup = file_get_contents( $file_path );
+
+	if ( false === $svg_markup || '' === trim( $svg_markup ) ) {
+		return '';
+	}
+
+	$classes = is_array( $classes ) ? $classes : preg_split( '/\s+/', trim( (string) $classes ) );
+	$classes = array_filter( array_map( 'sanitize_html_class', $classes ) );
+
+	$svg_markup = preg_replace( '/<\?xml.*?\?>/i', '', $svg_markup );
+	$svg_markup = preg_replace_callback(
+		'/<svg\b([^>]*)>/i',
+		static function ( $matches ) use ( $classes, $width, $height ) {
+			$attributes = $matches[1];
+
+			if ( preg_match( '/\bclass=("|\')(.*?)(\1)/i', $attributes, $class_matches ) ) {
+				$existing_classes = preg_split( '/\s+/', trim( $class_matches[2] ) );
+				$all_classes      = array_unique( array_filter( array_merge( $existing_classes, $classes ) ) );
+				$attributes       = preg_replace( '/\bclass=("|\')(.*?)(\1)/i', 'class="' . esc_attr( implode( ' ', $all_classes ) ) . '"', $attributes, 1 );
+			} elseif ( ! empty( $classes ) ) {
+				$attributes .= ' class="' . esc_attr( implode( ' ', $classes ) ) . '"';
+			}
+
+			if ( ! preg_match( '/\baria-hidden=/i', $attributes ) ) {
+				$attributes .= ' aria-hidden="true"';
+			}
+
+			if ( ! preg_match( '/\bfocusable=/i', $attributes ) ) {
+				$attributes .= ' focusable="false"';
+			}
+
+			if ( '' !== $width ) {
+				if ( preg_match( '/\bwidth=("|\')(.*?)(\1)/i', $attributes ) ) {
+					$attributes = preg_replace( '/\bwidth=("|\')(.*?)(\1)/i', 'width="' . esc_attr( $width ) . '"', $attributes, 1 );
+				} else {
+					$attributes .= ' width="' . esc_attr( $width ) . '"';
+				}
+			}
+
+			if ( '' !== $height ) {
+				if ( preg_match( '/\bheight=("|\')(.*?)(\1)/i', $attributes ) ) {
+					$attributes = preg_replace( '/\bheight=("|\')(.*?)(\1)/i', 'height="' . esc_attr( $height ) . '"', $attributes, 1 );
+				} else {
+					$attributes .= ' height="' . esc_attr( $height ) . '"';
+				}
+			}
+
+			return '<svg' . $attributes . '>';
+		},
+		$svg_markup,
+		1
+	);
+
+	$allowed_svg_tags = array(
+		'svg'            => array(
+			'aria-hidden'         => true,
+			'class'               => true,
+			'data-name'           => true,
+			'fill'                => true,
+			'focusable'           => true,
+			'height'              => true,
+			'id'                  => true,
+			'preserveaspectratio' => true,
+			'role'                => true,
+			'stroke'              => true,
+			'stroke-width'        => true,
+			'viewbox'             => true,
+			'width'               => true,
+			'xmlns'               => true,
+			'xmlns:xlink'         => true,
+		),
+		'g'              => array(
+			'class'             => true,
+			'clip-path'         => true,
+			'data-name'         => true,
+			'fill'              => true,
+			'fill-rule'         => true,
+			'id'                => true,
+			'mask'              => true,
+			'opacity'           => true,
+			'stroke'            => true,
+			'stroke-linecap'    => true,
+			'stroke-linejoin'   => true,
+			'stroke-miterlimit' => true,
+			'stroke-width'      => true,
+			'transform'         => true,
+		),
+		'path'           => array(
+			'class'             => true,
+			'clip-rule'         => true,
+			'd'                 => true,
+			'fill'              => true,
+			'fill-rule'         => true,
+			'opacity'           => true,
+			'stroke'            => true,
+			'stroke-linecap'    => true,
+			'stroke-linejoin'   => true,
+			'stroke-miterlimit' => true,
+			'stroke-width'      => true,
+			'transform'         => true,
+		),
+		'circle'         => array(
+			'class'        => true,
+			'cx'           => true,
+			'cy'           => true,
+			'fill'         => true,
+			'opacity'      => true,
+			'r'            => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		),
+		'ellipse'        => array(
+			'class'        => true,
+			'cx'           => true,
+			'cy'           => true,
+			'fill'         => true,
+			'opacity'      => true,
+			'rx'           => true,
+			'ry'           => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		),
+		'line'           => array(
+			'class'          => true,
+			'stroke'         => true,
+			'stroke-linecap' => true,
+			'stroke-width'   => true,
+			'x1'             => true,
+			'x2'             => true,
+			'y1'             => true,
+			'y2'             => true,
+		),
+		'polygon'        => array(
+			'class'        => true,
+			'fill'         => true,
+			'opacity'      => true,
+			'points'       => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		),
+		'polyline'       => array(
+			'class'        => true,
+			'fill'         => true,
+			'opacity'      => true,
+			'points'       => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+		),
+		'rect'           => array(
+			'class'        => true,
+			'fill'         => true,
+			'height'       => true,
+			'opacity'      => true,
+			'rx'           => true,
+			'ry'           => true,
+			'stroke'       => true,
+			'stroke-width' => true,
+			'width'        => true,
+			'x'            => true,
+			'y'            => true,
+		),
+		'defs'           => array(),
+		'style'          => array(
+			'type' => true,
+		),
+		'clippath'       => array(
+			'id' => true,
+		),
+		'mask'           => array(
+			'id'        => true,
+			'maskunits' => true,
+			'x'         => true,
+			'y'         => true,
+			'width'     => true,
+			'height'    => true,
+		),
+		'lineargradient' => array(
+			'id' => true,
+			'x1' => true,
+			'x2' => true,
+			'y1' => true,
+			'y2' => true,
+		),
+		'radialgradient' => array(
+			'cx' => true,
+			'cy' => true,
+			'fx' => true,
+			'fy' => true,
+			'id' => true,
+			'r'  => true,
+		),
+		'stop'           => array(
+			'offset'       => true,
+			'stop-color'   => true,
+			'stop-opacity' => true,
+		),
+		'title'          => array(),
+		'desc'           => array(),
+		'use'            => array(
+			'href'       => true,
+			'width'      => true,
+			'height'     => true,
+			'x'          => true,
+			'xlink:href' => true,
+			'y'          => true,
+		),
+	);
+
+	return wp_kses( $svg_markup, $allowed_svg_tags );
+}
+
 add_shortcode(
 	'contact_address',
 	function () {
