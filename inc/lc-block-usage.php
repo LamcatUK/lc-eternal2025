@@ -12,7 +12,7 @@ defined( 'ABSPATH' ) || exit;
  *
  * @return string HTML table of block usage.
  */
-function block_usage_table_shortcode() {
+function lc_block_usage_table_shortcode() {
 	// Get all block files from /blocks directory.
 	$blocks_dir  = get_stylesheet_directory() . '/blocks/';
 	$block_files = glob( $blocks_dir . 'lc-*.php' );
@@ -103,4 +103,5 @@ function block_usage_table_shortcode() {
 	return ob_get_clean();
 }
 
-add_shortcode( 'block_usage_table', 'block_usage_table_shortcode' );
+add_shortcode( 'lc_block_usage_table', 'lc_block_usage_table_shortcode' );
+add_shortcode( 'block_usage_table', 'lc_block_usage_table_shortcode' );

@@ -146,7 +146,7 @@ get_header();
 		<section class="related mt-3 py-5 has-blue-50-background-color has-background-color">
 			<div class="container-xl">
 				<div class="d-flex justify-content-between mb-4 align-items-center">
-					<h2>Related Eye Care Insights</h2>
+					<h2>Related Insights</h2>
 					<a class="btn btn-secondary align-self-center"
 						href="<?= esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">
 						View All Insights
