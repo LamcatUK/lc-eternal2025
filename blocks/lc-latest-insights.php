@@ -11,7 +11,7 @@ defined( 'ABSPATH' ) || exit;
 <section class="latest-insights py-5 has-blue-50-background-color has-background-color">
 	<div class="container">
 		<div class="d-flex justify-content-between mb-4 align-items-center">
-			<h2>Latest Eye Care Insights</h2>
+			<h2>Latest Insights</h2>
 			<a class="btn btn-secondary align-self-center"
 				href="<?= esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">
 				View All Insights
