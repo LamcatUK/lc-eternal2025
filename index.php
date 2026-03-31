@@ -89,6 +89,7 @@ $page_for_posts = get_option('page_for_posts');
 				</a>
 				<?php
 				if ( '' !== $c ) {
+					/*
 					?>
 					<section class="cta my-2">
 						<div class="container-xl px-5 py-4 d-flex justify-content-between align-items-center gap-4 flex-wrap">
@@ -97,6 +98,7 @@ $page_for_posts = get_option('page_for_posts');
 						</div>
 					</section>
 					<?php
+					*/
 				}
 				$style  = '';
 				$c      = '';
