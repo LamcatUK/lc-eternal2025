@@ -22,7 +22,7 @@ $product_categories = get_terms(
 	<div class="container py-5">
 		<h2 class="has-white-color mb-4">Our products</h2>
 		<nav class="product-nav__inner" aria-label="Product Navigation">
-			<div class="row">
+			<div class="row g-4">
 				<?php
 				foreach ( $product_categories as $product_category ) {
 					$category_link  = get_term_link( $product_category );
