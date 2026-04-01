@@ -82,7 +82,7 @@ $products = new WP_Query(
 
 			if ( $products->have_posts() ) {
 				?>
-				<div class="row g-3 mb-4 align-items-end">
+				<div class="row g-3 mb-4 align-items-end product-browser__toolbar">
 					<div class="col-md-4">
 						<label for="skuSearch" class="form-label">Search by Product Code</label>
 						<input type="text" id="skuSearch" class="form-control" placeholder="e.g. ABC123" aria-label="Search by Product Code">
@@ -91,46 +91,101 @@ $products = new WP_Query(
 						<label class="form-label invisible">Reset</label>
 						<button id="resetFilters" class="btn btn-secondary">Reset</button>
 					</div>
+					<div class="col-md-2">
+						<div class="product-browser__switcher" role="group" aria-label="Product view switcher">
+							<button type="button" class="btn btn-outline-primary is-active" data-view="grid"><i class="fa-solid fa-grip"></i></button>
+							<button type="button" class="btn btn-outline-primary" data-view="row"><i class="fa-solid fa-bars"></i></button>
+						</div>
+					</div>
 				</div>
 
 				<p id="productCount" class="fw-bold mb-3">&nbsp;</p>
 
-				<div class="products-grid">
+				<div class="product-browser product-browser--taxonomy" data-default-view="grid">
+					<div class="products-grid-view">
+						<div class="row g-4" id="productGridCards">
+							<?php
+							while ( $products->have_posts() ) {
+								$products->the_post();
+								$product_id   = get_the_ID();
+								$sku          = get_the_title();
+								$product_name = lc_get_product_display_name( $product_id );
+								$material     = get_field( 'material', $product_id );
+								$size         = get_field( 'size', $product_id );
+								$size_units   = get_field( 'size_units', $product_id );
+								$colour       = get_field( 'colour', $product_id );
+								$size_label   = trim( $size . ' ' . $size_units );
+								?>
+								<div class="col-md-6 col-xl-3 product-browser__item product-browser__item--grid" data-sku="<?= esc_attr( $sku ); ?>">
+									<a href="<?= esc_url( get_permalink() ); ?>" class="product-browser__card text-decoration-none">
+										<div class="product-browser__card-header">
+											<h3 class="h5 mb-0"><?= esc_html( $product_name ); ?></h3>
+										</div>
+										<div class="product-browser__card-body">
+											<div class="product-browser__card-layout">
+												<div class="product-browser__card-image">
+													<?php if ( has_post_thumbnail() ) : ?>
+														<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'medium' ) ); ?>" alt="<?= esc_attr( $product_name ); ?>">
+													<?php else : ?>
+														<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" alt="<?= esc_attr( $product_name ); ?>">
+													<?php endif; ?>
+												</div>
+												<div class="product-browser__card-meta small">
+													<div><strong>Size:</strong> <?= esc_html( $size_label ? $size_label : '-' ); ?></div>
+													<div><strong>Material:</strong> <?= esc_html( $material ? $material : '-' ); ?></div>
+													<?php if ( $colour ) : ?>
+														<div><strong>Colour:</strong> <?= esc_html( $colour ); ?></div>
+													<?php endif; ?>
+													<div class="product-browser__sku text-muted"><?= esc_html( $sku ); ?></div>
+												</div>
+											</div>
+										</div>
+									</a>
+								</div>
+								<?php
+							}
+							wp_reset_postdata();
+							?>
+						</div>
+					</div>
+
+					<div class="products-grid products-row-view d-none">
 					<table class="table table-striped table-hover">
 						<thead>
 							<tr>
 								<th style="width:66px;"></th>
 								<th>Product Code</th>
-								<th>Description</th>
+								<th>Product Name</th>
 								<th>Material</th>
 								<th>Size</th>
-								<th>Colour</th>
 								<th>Details</th>
 							</tr>
 						</thead>
 						<tbody>
 							<?php
+							rewind_posts();
 							while ( $products->have_posts() ) {
 								$products->the_post();
-								$product_id  = get_the_ID();
-								$description = get_field( 'description', $product_id );
-								$material    = get_field( 'material', $product_id );
-								$size        = get_field( 'size', $product_id );
-								$colour      = get_field( 'colour', $product_id );
+								$product_id   = get_the_ID();
+								$sku          = get_the_title();
+								$product_name = lc_get_product_display_name( $product_id );
+								$material     = get_field( 'material', $product_id );
+								$size         = get_field( 'size', $product_id );
+								$size_units   = get_field( 'size_units', $product_id );
+								$size_label   = trim( $size . ' ' . $size_units );
 								?>
-								<tr class="product-card" data-sku="<?= esc_attr( get_the_title() ); ?>">
+								<tr class="product-card" data-sku="<?= esc_attr( $sku ); ?>">
 									<td>
 										<?php if ( has_post_thumbnail() ) : ?>
-											<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'thumbnail' ) ); ?>" width="50" height="50" style="object-fit:cover;border-radius:4px;" alt="<?= esc_attr( get_the_title() ); ?>">
+											<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'thumbnail' ) ); ?>" width="50" height="50" style="object-fit:cover;border-radius:4px;" alt="<?= esc_attr( $product_name ); ?>">
 										<?php else : ?>
 											<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" width="50" height="50" style="object-fit:cover;border-radius:4px;" alt="">
 										<?php endif; ?>
 									</td>
-									<td><strong><?= esc_html( get_the_title() ); ?></strong></td>
-									<td><?= wp_kses_post( wp_trim_words( $description, 15 ) ); ?></td>
+									<td><strong><?= esc_html( $sku ); ?></strong></td>
+									<td><?= esc_html( $product_name ); ?></td>
 									<td><?= esc_html( $material ? $material : '-' ); ?></td>
-									<td><?= esc_html( $size ? $size : '-' ); ?></td>
-									<td><?= esc_html( $colour ? $colour : '-' ); ?></td>
+									<td><?= esc_html( $size_label ? $size_label : '-' ); ?></td>
 									<td>
 										<a href="<?= esc_url( get_permalink() ); ?>" class="btn btn-sm btn-outline-primary">
 											View Details
@@ -143,6 +198,7 @@ $products = new WP_Query(
 							?>
 						</tbody>
 					</table>
+				</div>
 				</div>
 				<?php
 			} else {
@@ -195,21 +251,45 @@ $products = new WP_Query(
 
 <script>
 document.addEventListener('DOMContentLoaded', () => {
+	const viewButtons = document.querySelectorAll('.product-browser__switcher [data-view]');
+	const browser = document.querySelector('.product-browser');
+	const gridView = document.querySelector('.products-grid-view');
+	const rowView = document.querySelector('.products-row-view');
+	const storageKey = 'lcProductBrowserView';
+
 	document.getElementById('skuSearch').addEventListener('input', filterCards);
+	viewButtons.forEach(button => {
+		button.addEventListener('click', () => setView(button.dataset.view));
+	});
 	document.getElementById('resetFilters').addEventListener('click', () => {
 		document.getElementById('skuSearch').value = '';
 		filterCards();
 	});
+	setView(localStorage.getItem(storageKey) || browser.dataset.defaultView || 'grid');
 	filterCards();
+
+	function setView(view) {
+		const isGrid = view !== 'row';
+		gridView.classList.toggle('d-none', !isGrid);
+		rowView.classList.toggle('d-none', isGrid);
+		viewButtons.forEach(button => button.classList.toggle('is-active', button.dataset.view === view));
+		localStorage.setItem(storageKey, view);
+	}
 });
 
 function filterCards() {
 	let visibleCount = 0;
 	const skuQuery = document.getElementById('skuSearch').value.toLowerCase();
 
-	document.querySelectorAll('.product-card').forEach(row => {
+	const rowItems = document.querySelectorAll('.product-card');
+	const gridItems = document.querySelectorAll('.product-browser__item--grid');
+
+	rowItems.forEach((row, index) => {
 		const visible = row.dataset.sku.toLowerCase().includes(skuQuery);
 		row.style.display = visible ? '' : 'none';
+		if (gridItems[index]) {
+			gridItems[index].style.display = visible ? '' : 'none';
+		}
 		visibleCount += visible ? 1 : 0;
 	});
 

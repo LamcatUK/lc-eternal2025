@@ -42,24 +42,25 @@ if ( $anchor ) {
 				<ul class="splide__list">
 					<?php foreach ( $products as $product_id ) : ?>
 						<?php
-						$sku         = get_the_title( $product_id );
-						$description = get_field( 'description', $product_id );
-						$material    = get_field( 'material', $product_id );
-						$size        = get_field( 'size', $product_id );
-						$size_units  = get_field( 'size_units', $product_id );
-						$colour      = get_field( 'colour', $product_id );
-						$pack_size   = get_field( 'pack_size', $product_id );
+						$sku          = get_the_title( $product_id );
+						$product_name = lc_get_product_display_name( $product_id );
+						$description  = get_field( 'description', $product_id );
+						$material     = get_field( 'material', $product_id );
+						$size         = get_field( 'size', $product_id );
+						$size_units   = get_field( 'size_units', $product_id );
+						$colour       = get_field( 'colour', $product_id );
+						$pack_size    = get_field( 'pack_size', $product_id );
 						?>
 						<li class="splide__slide">
 							<a class="card h-100 lc-popular-products__card" href="<?= esc_url( get_permalink( $product_id ) ); ?>">
 								<?php if ( has_post_thumbnail( $product_id ) ) : ?>
-									<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'medium' ) ); ?>" class="card-img-top lc-popular-products__image" alt="<?= esc_attr( $sku ); ?>">
+									<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'medium' ) ); ?>" class="card-img-top lc-popular-products__image" alt="<?= esc_attr( $product_name ); ?>">
 								<?php else : ?>
-									<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" class="card-img-top lc-popular-products__image" alt="<?= esc_attr( $sku ); ?>">
+									<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" class="card-img-top lc-popular-products__image" alt="<?= esc_attr( $product_name ); ?>">
 								<?php endif; ?>
 
 								<div class="card-body d-flex flex-column">
-									<h3 class="card-title h5 mb-2"><?= esc_html( $sku ); ?></h3>
+									<h3 class="card-title h5 mb-2"><?= esc_html( $product_name ); ?></h3>
 
 									<?php if ( $description ) : ?>
 										<p class="card-text mb-3"><?= esc_html( wp_trim_words( wp_strip_all_tags( $description ), 18 ) ); ?></p>

@@ -28,8 +28,23 @@ function lc_products_admin_menu() {
 		'lc-bulk-assign-image',
 		'lc_products_bulk_image_page'
 	);
+
 }
 add_action( 'admin_menu', 'lc_products_admin_menu' );
+
+/**
+ * Get the product display name, falling back to the SKU/title.
+ *
+ * @param int|null $product_id Product ID.
+ * @return string
+ */
+function lc_get_product_display_name( $product_id = null ) {
+	$product_id    = $product_id ? (int) $product_id : get_the_ID();
+	$product_name  = get_field( 'product_name', $product_id );
+	$product_title = get_the_title( $product_id );
+
+	return $product_name ? $product_name : $product_title;
+}
 
 /**
  * Get CSV to ACF field mapping for product imports.
@@ -73,6 +88,338 @@ function lc_products_import_page_url( $args = array() ) {
 
 	return $url;
 }
+
+/**
+ * Get the one-off update page URL.
+ *
+ * @param array $args Optional query args.
+ * @return string
+ */
+function lc_products_one_off_update_page_url( $args = array() ) {
+	return lc_products_import_page_url( $args );
+}
+
+/**
+ * Update Yoast title meta and indexable title for a post.
+ *
+ * @param int    $post_id    Post ID.
+ * @param string $meta_title Yoast meta title.
+ * @return void
+ */
+function lc_products_update_yoast_title( $post_id, $meta_title ) {
+	global $wpdb;
+
+	update_post_meta( $post_id, '_yoast_wpseo_title', $meta_title );
+
+	$indexable_table = $wpdb->prefix . 'yoast_indexable';
+	$table_exists    = $wpdb->get_var( $wpdb->prepare( 'SHOW TABLES LIKE %s', $indexable_table ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+
+	if ( $table_exists === $indexable_table ) {
+		$wpdb->update( // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery,WordPress.DB.DirectDatabaseQuery.NoCaching
+			$indexable_table,
+			array(
+				'title' => $meta_title,
+			),
+			array(
+				'object_id'      => $post_id,
+				'object_type'    => 'post',
+				'object_sub_type' => 'product',
+			),
+			array( '%s' ),
+			array( '%d', '%s', '%s' )
+		);
+	}
+}
+
+/**
+ * Render the one-off product update page.
+ *
+ * @return void
+ */
+function lc_products_render_one_off_update_tool() {
+	$dry_run_report = null;
+
+	if ( ! empty( $_GET['one_off_report'] ) ) {
+		$user_id        = get_current_user_id();
+		$report_key     = sanitize_key( wp_unslash( $_GET['one_off_report'] ) );
+		$dry_run_report = get_transient( 'lc_product_one_off_' . $user_id . '_' . $report_key );
+	}
+	?>
+	<div class="lc-products-one-off-update" style="margin-top:2rem;">
+		<h2>One-Off Product Update</h2>
+		<p>Upload a CSV with <code>Current Slug</code>, <code>New Slug</code>, <code>Product Name</code>, <code>Meta Title</code>, and <code>Product Description</code>.</p>
+
+		<?php if ( isset( $_GET['updated'] ) ) : ?>
+			<div class="notice notice-success is-dismissible"><p>
+				<?php
+				printf(
+					esc_html__( 'Processed %1$d rows: %2$d updated, %3$d unchanged, %4$d skipped.', 'lc-eternal2025' ),
+					intval( $_GET['processed'] ?? 0 ),
+					intval( $_GET['updated'] ?? 0 ),
+					intval( $_GET['unchanged'] ?? 0 ),
+					intval( $_GET['skipped'] ?? 0 )
+				);
+				?>
+			</p></div>
+		<?php endif; ?>
+
+		<?php if ( ! empty( $_GET['error'] ) ) : ?>
+			<div class="notice notice-error is-dismissible"><p><?= esc_html( wp_unslash( $_GET['error'] ) ); ?></p></div>
+		<?php endif; ?>
+
+		<?php if ( $dry_run_report ) : ?>
+			<h2>Dry Run Preview</h2>
+			<p class="description">This report matches products by <code>Current Slug</code> and previews slug, Product Name, Yoast title, and Description changes.</p>
+			<table class="widefat striped" style="margin-top:1rem;">
+				<thead>
+					<tr>
+						<th>Row</th>
+						<th>Current Slug</th>
+						<th>Matched Product</th>
+						<th>Action</th>
+						<th>Details</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php foreach ( $dry_run_report['rows'] as $row ) : ?>
+						<tr>
+							<td><?= esc_html( (string) $row['row_number'] ); ?></td>
+							<td><?= esc_html( $row['current_slug'] ); ?></td>
+							<td><?= esc_html( $row['matched_product'] ); ?></td>
+							<td><?= esc_html( ucfirst( $row['action'] ) ); ?></td>
+							<td>
+								<?php if ( ! empty( $row['changes'] ) ) : ?>
+									<ul style="margin:0;padding-left:18px;">
+										<?php foreach ( $row['changes'] as $change ) : ?>
+											<li><?= esc_html( $change ); ?></li>
+										<?php endforeach; ?>
+									</ul>
+								<?php else : ?>
+									<?= esc_html( $row['message'] ); ?>
+								<?php endif; ?>
+							</td>
+						</tr>
+					<?php endforeach; ?>
+				</tbody>
+			</table>
+		<?php endif; ?>
+
+		<form method="post" enctype="multipart/form-data" action="">
+			<?php wp_nonce_field( 'lc_product_one_off_update', 'lc_product_one_off_nonce' ); ?>
+			<table class="form-table">
+				<tr>
+					<th scope="row"><label for="product_one_off_csv">CSV File</label></th>
+					<td>
+						<input type="file" name="product_one_off_csv" id="product_one_off_csv" accept=".csv" required>
+						<p class="description">Expected columns: Current Slug, New Slug, Product Name, Meta Title, Product Description.</p>
+					</td>
+				</tr>
+			</table>
+			<p class="submit">
+				<input type="submit" name="lc_product_one_off_run" class="button button-primary" value="Run Update">
+				<input type="submit" name="lc_product_one_off_dry_run" class="button button-secondary" value="Dry Run Update">
+			</p>
+		</form>
+	</div>
+	<?php
+}
+
+/**
+ * Process the one-off product update CSV.
+ *
+ * @return void
+ */
+function lc_products_process_one_off_update() {
+	if ( ! isset( $_POST['lc_product_one_off_nonce'] ) || ( ! isset( $_POST['lc_product_one_off_run'] ) && ! isset( $_POST['lc_product_one_off_dry_run'] ) ) ) {
+		return;
+	}
+
+	if ( ! wp_verify_nonce( $_POST['lc_product_one_off_nonce'], 'lc_product_one_off_update' ) ) {
+		wp_die( 'Security check failed' );
+	}
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_die( 'Unauthorized' );
+	}
+
+	if ( empty( $_FILES['product_one_off_csv']['tmp_name'] ) ) {
+		wp_redirect( lc_products_one_off_update_page_url( array( 'error' => rawurlencode( 'No file uploaded' ) ) ) );
+		exit;
+	}
+
+	$handle = fopen( $_FILES['product_one_off_csv']['tmp_name'], 'r' );
+	if ( ! $handle ) {
+		wp_redirect( lc_products_one_off_update_page_url( array( 'error' => rawurlencode( 'Could not open file' ) ) ) );
+		exit;
+	}
+
+	$headers = fgetcsv( $handle );
+	if ( ! $headers ) {
+		fclose( $handle );
+		wp_redirect( lc_products_one_off_update_page_url( array( 'error' => rawurlencode( 'Invalid CSV format' ) ) ) );
+		exit;
+	}
+
+	$header_map = array();
+	foreach ( $headers as $index => $header ) {
+		$header_map[ trim( $header ) ] = $index;
+	}
+
+	$required_headers = array( 'Current Slug', 'New Slug', 'Product Name', 'Meta Title', 'Product Description' );
+	foreach ( $required_headers as $required_header ) {
+		if ( ! isset( $header_map[ $required_header ] ) ) {
+			fclose( $handle );
+			wp_redirect( lc_products_one_off_update_page_url( array( 'error' => rawurlencode( 'Missing required column: ' . $required_header ) ) ) );
+			exit;
+		}
+	}
+
+	$dry_run     = isset( $_POST['lc_product_one_off_dry_run'] );
+	$row_number  = 1;
+	$summary     = array(
+		'processed'  => 0,
+		'updated'    => 0,
+		'unchanged'  => 0,
+		'skipped'    => 0,
+	);
+	$report_rows = array();
+
+	while ( ( $row = fgetcsv( $handle ) ) !== false ) {
+		++$row_number;
+		++$summary['processed'];
+
+		$current_slug        = trim( (string) $row[ $header_map['Current Slug'] ] );
+			$new_slug            = sanitize_title( trim( (string) $row[ $header_map['New Slug'] ] ) );
+		$product_name        = trim( (string) $row[ $header_map['Product Name'] ] );
+		$meta_title          = trim( (string) $row[ $header_map['Meta Title'] ] );
+		$product_description = trim( (string) $row[ $header_map['Product Description'] ] );
+
+		if ( '' === $current_slug ) {
+			++$summary['skipped'];
+			$report_rows[] = array(
+				'row_number'      => $row_number,
+				'current_slug'    => '',
+				'matched_product' => '',
+				'action'          => 'skip',
+				'changes'         => array(),
+				'message'         => 'Missing Current Slug',
+			);
+			continue;
+		}
+
+		$matched_products = get_posts(
+			array(
+				'name'           => $current_slug,
+				'post_type'      => 'product',
+				'post_status'    => array( 'publish', 'draft', 'pending', 'future', 'private' ),
+				'posts_per_page' => 2,
+			)
+		);
+
+		if ( 1 !== count( $matched_products ) ) {
+			++$summary['skipped'];
+			$report_rows[] = array(
+				'row_number'      => $row_number,
+				'current_slug'    => $current_slug,
+				'matched_product' => '',
+				'action'          => 'skip',
+				'changes'         => array(),
+				'message'         => empty( $matched_products ) ? 'No product found for Current Slug' : 'Multiple products matched Current Slug',
+			);
+			continue;
+		}
+
+		$product = $matched_products[0];
+		$post_id = $product->ID;
+		$changes = array();
+
+		$current_product_name = (string) get_field( 'product_name', $post_id );
+		$current_description  = (string) get_field( 'description', $post_id );
+		$current_meta_title   = (string) get_post_meta( $post_id, '_yoast_wpseo_title', true );
+
+		if ( '' !== $new_slug && $new_slug !== $product->post_name ) {
+			$changes[] = sprintf( 'Slug: %1$s -> %2$s', $product->post_name, $new_slug );
+		}
+
+		if ( $product_name !== $current_product_name ) {
+			$changes[] = sprintf( 'Product Name: %1$s -> %2$s', '' === $current_product_name ? '[empty]' : $current_product_name, $product_name );
+		}
+
+		if ( $meta_title !== $current_meta_title ) {
+			$changes[] = sprintf( 'Meta Title: %1$s -> %2$s', '' === $current_meta_title ? '[empty]' : $current_meta_title, $meta_title );
+		}
+
+		if ( $product_description !== $current_description ) {
+			$changes[] = sprintf( 'Product Description: %1$s -> %2$s', '' === $current_description ? '[empty]' : wp_trim_words( wp_strip_all_tags( $current_description ), 12 ), wp_trim_words( wp_strip_all_tags( $product_description ), 12 ) );
+		}
+
+		$action = empty( $changes ) ? 'unchanged' : 'update';
+
+		if ( ! $dry_run && 'update' === $action ) {
+			if ( '' !== $new_slug && $new_slug !== $product->post_name ) {
+				wp_update_post(
+					array(
+						'ID'        => $post_id,
+						'post_name' => $new_slug,
+					),
+					true
+				);
+			}
+
+			update_field( 'product_name', $product_name, $post_id );
+			update_field( 'description', $product_description, $post_id );
+			lc_products_update_yoast_title( $post_id, $meta_title );
+			clean_post_cache( $post_id );
+		}
+
+		if ( 'update' === $action ) {
+			++$summary['updated'];
+		} else {
+			++$summary['unchanged'];
+		}
+
+		$report_rows[] = array(
+			'row_number'      => $row_number,
+			'current_slug'    => $current_slug,
+			'matched_product' => lc_products_format_report_product_label( $product ),
+			'action'          => $action,
+			'changes'         => $changes,
+			'message'         => empty( $changes ) ? 'No changes detected' : '',
+		);
+	}
+
+	fclose( $handle );
+
+	if ( $dry_run ) {
+		$user_id    = get_current_user_id();
+		$report_key = strtolower( wp_generate_password( 12, false, false ) );
+
+		set_transient(
+			'lc_product_one_off_' . $user_id . '_' . $report_key,
+			array(
+				'summary' => $summary,
+				'rows'    => $report_rows,
+			),
+			15 * MINUTE_IN_SECONDS
+		);
+
+		wp_redirect( lc_products_one_off_update_page_url( array( 'one_off_report' => $report_key ) ) );
+		exit;
+	}
+
+	wp_redirect(
+		lc_products_one_off_update_page_url(
+			array(
+				'processed'  => $summary['processed'],
+				'updated'    => $summary['updated'],
+				'unchanged'  => $summary['unchanged'],
+				'skipped'    => $summary['skipped'],
+			)
+		)
+	);
+	exit;
+}
+add_action( 'admin_init', 'lc_products_process_one_off_update' );
 
 /**
  * Get the import mode from the request.
@@ -589,6 +936,10 @@ function lc_products_import_page() {
 				<input type="submit" name="lc_import_dry_run" class="button button-secondary" value="Dry Run Import">
 			</p>
 		</form>
+
+		<hr>
+
+		<?php lc_products_render_one_off_update_tool(); ?>
 	</div>
 	<?php
 }

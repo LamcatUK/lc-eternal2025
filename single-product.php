@@ -15,8 +15,10 @@ get_header();
 	while ( have_posts() ) {
 		the_post();
 
-		$product_id = get_the_ID();
-		$img        = get_the_post_thumbnail( $product_id, 'large', array( 'class' => 'single-product__image img-fluid' ) );
+		$product_id   = get_the_ID();
+		$sku          = get_the_title( $product_id );
+		$product_name = lc_get_product_display_name( $product_id );
+		$img          = get_the_post_thumbnail( $product_id, 'large', array( 'class' => 'single-product__image img-fluid' ) );
 
 		// Get ACF fields.
 		$description      = get_field( 'description', $product_id );
@@ -52,7 +54,7 @@ get_header();
 				<span class="breadcrumb-separator"> / </span>
 				<a href="/type/<?= esc_attr( $category->slug ); ?>/"><?= esc_html( $category->name ); ?></a>
 				<span class="breadcrumb-separator"> / </span>
-				<?= esc_html( get_the_title() ); ?>
+				<?= esc_html( $product_name ); ?>
 				<?php
 			} else {
 				?>
@@ -65,7 +67,7 @@ get_header();
 	</section>
 		
 	<div class="container">
-		<h1 class="single-product__title mb-4"><?= esc_html( get_the_title() ); ?></h1>
+		<h1 class="single-product__title mb-4"><?= esc_html( $product_name ); ?> - <?= esc_html( $sku ); ?></h1>
 		
 		<div class="row g-4">
 			<div class="col-lg-5">
@@ -77,7 +79,7 @@ get_header();
 				<img
 					src="<?php echo esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>"
 					class="single-product__image img-fluid"
-					alt="<?= esc_attr( get_the_title() ); ?>">
+					alt="<?= esc_attr( $product_name ); ?>">
 						<?php
 					}
 					?>
@@ -90,10 +92,18 @@ get_header();
 					<table class="table table-bordered">
 						<tbody>
 							<?php
+							if ( $sku ) {
+								?>
+							<tr>
+								<th style="width: 40%;">Product Code</th>
+								<td><?= esc_html( $sku ); ?></td>
+							</tr>
+								<?php
+							}
 							if ( $brand_name ) {
 								?>
 							<tr>
-								<th style="width: 40%;">Brand Name</th>
+								<th>Brand Name</th>
 								<td><?= esc_html( $brand_name ); ?></td>
 							</tr>
 								<?php
@@ -270,14 +280,14 @@ get_header();
 										the_post_thumbnail( 'medium', array( 'class' => 'card-img-top' ) );
 									} else {
 										?>
-										<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" class="card-img-top" alt="<?= esc_attr( get_the_title() ); ?>">
+										<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" class="card-img-top" alt="<?= esc_attr( lc_get_product_display_name( $related_id ) ); ?>">
 										<?php
 									}
 									?>
 								</div>
 								<div class="card-body">
-									<h4 class="card-title smaller"><?= esc_html( get_the_title() ); ?></h4>
-									<h4 class="card-title h6 fw-bold"><?= esc_html( get_field( 'description', $related_id ) ); ?></h4>
+									<h4 class="card-title smaller"><?= esc_html( lc_get_product_display_name( $related_id ) ); ?></h4>
+									<h4 class="card-title h6 fw-bold"><?= esc_html( get_the_title( $related_id ) ); ?></h4>
 									<?php
 									$related_material = get_field( 'material', $related_id );
 									$related_colour   = get_field( 'colour', $related_id );
