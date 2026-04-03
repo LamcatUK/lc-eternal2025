@@ -271,43 +271,37 @@ get_header();
 					while ( $related_products->have_posts() ) {
 						$related_products->the_post();
 						$related_id = get_the_ID();
+						$related_name = lc_get_product_display_name( $related_id );
+						$related_sku = get_the_title( $related_id );
+						$related_material = get_field( 'material', $related_id );
+						$related_colour = get_field( 'colour', $related_id );
+						$related_details = array();
+						if ( $related_material ) {
+							$related_details[] = $related_material;
+						}
+						if ( $related_colour ) {
+							$related_details[] = $related_colour;
+						}
 						?>
 						<div class="col-md-6 col-lg-3">
-							<a href="<?= esc_url( get_permalink() ); ?>" class="related-product card h-100 text-decoration-none">
-								<div class="related-product__image">
+							<a href="<?= esc_url( get_permalink() ); ?>" class="lc-product-card related-product">
+								<div class="lc-product-card__image related-product__image">
 									<?php
 									if ( has_post_thumbnail() ) {
-										the_post_thumbnail( 'medium', array( 'class' => 'card-img-top' ) );
+										the_post_thumbnail( 'medium' );
 									} else {
 										?>
-										<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" class="card-img-top" alt="<?= esc_attr( lc_get_product_display_name( $related_id ) ); ?>">
+										<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" alt="<?= esc_attr( $related_name ); ?>">
 										<?php
 									}
 									?>
 								</div>
-								<div class="card-body">
-									<h4 class="card-title smaller"><?= esc_html( lc_get_product_display_name( $related_id ) ); ?></h4>
-									<h4 class="card-title h6 fw-bold"><?= esc_html( get_the_title( $related_id ) ); ?></h4>
-									<?php
-									$related_material = get_field( 'material', $related_id );
-									$related_colour   = get_field( 'colour', $related_id );
-									?>
-									<?php
-									if ( $related_material || $related_colour ) {
-										?>
-										<p class="card-text text-muted small">
-											<?php
-											$details = array();
-											if ( $related_material ) {
-												$details[] = $related_material;
-											}
-											if ( $related_colour ) {
-												$details[] = $related_colour;
-											}
-											echo esc_html( implode( ' • ', $details ) );
-											?>
-										</p>
-										<?php } ?>
+								<div class="lc-product-card__body">
+									<h4 class="lc-product-card__title"><?= esc_html( $related_name ); ?></h4>
+									<p class="lc-product-card__sku"><?= esc_html( $related_sku ); ?></p>
+									<?php if ( ! empty( $related_details ) ) : ?>
+										<p class="lc-product-card__meta text-muted small"><?= esc_html( implode( ' • ', $related_details ) ); ?></p>
+									<?php endif; ?>
 								</div>
 							</a>
 						</div>

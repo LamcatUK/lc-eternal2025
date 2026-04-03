@@ -17,6 +17,40 @@ function acf_blocks() {
 
 		// INSERT NEW BLOCKS HERE.
 
+			acf_register_block_type(
+			array(
+				'name'            => 'lc_sectors_nav',
+				'title'           => __( 'LC Sectors Nav' ),
+				'category'        => 'layout',
+				'icon'            => 'cover-image',
+				'render_template' => 'blocks/lc-sectors-nav.php',
+				'mode'            => 'edit',
+				'supports'        => array(
+					'mode'      => false,
+					'anchor'    => true,
+					'className' => true,
+					'align'     => true,
+				),
+			)
+			);
+
+			acf_register_block_type(
+			array(
+				'name'            => 'lc_cta',
+				'title'           => __( 'LC CTA' ),
+				'category'        => 'layout',
+				'icon'            => 'cover-image',
+				'render_template' => 'blocks/lc-cta.php',
+				'mode'            => 'edit',
+				'supports'        => array(
+					'mode'      => false,
+					'anchor'    => true,
+					'className' => true,
+					'align'     => true,
+				),
+			)
+			);
+
 		acf_register_block_type(
 			array(
 				'name'            => 'lc_products_by_category',
@@ -64,6 +98,11 @@ function acf_blocks() {
 					'anchor'    => true,
 					'className' => true,
 					'align'     => true,
+					'color'     => array(
+						'text'       => true,
+						'background' => true,
+						'gradients'  => false,
+					),
 				),
 			)
 		);
@@ -81,29 +120,11 @@ function acf_blocks() {
 					'anchor'    => true,
 					'className' => true,
 					'align'     => true,
-				),
-			)
-		);
-
-		acf_register_block_type(
-			array(
-				'name'            => 'lc_blog_cta',
-				'title'           => __( 'LC Blog CTA' ),
-				'category'        => 'layout',
-				'icon'            => 'cover-image',
-				'render_template' => 'blocks/lc-blog-cta.php',
-				'mode'            => 'edit',
-				'supports'        => array(
-					'mode'      => false,
-					'anchor'    => true,
-					'className' => true,
-					'align'     => true,
 					'color'     => array(
 						'text'       => true,
 						'background' => true,
 						'gradients'  => false,
 					),
-
 				),
 			)
 		);

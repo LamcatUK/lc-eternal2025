@@ -18,7 +18,7 @@ $product_categories = get_terms(
 );
 
 ?>
-<section class="product-nav">
+<section class="product-nav lc-nav-cards">
 	<div class="container py-5">
 		<h2 class="has-white-color mb-4">Our products</h2>
 		<nav class="product-nav__inner" aria-label="Product Navigation">
@@ -33,15 +33,19 @@ $product_categories = get_terms(
 					}
 
 					?>
-				<div class="col-md-4">
-					<a class="product-nav__link" href="<?php echo esc_url( $category_link ); ?>">
-						<?php if ( ! empty( $category_image['ID'] ) ) : ?>
-							<?= wp_get_attachment_image( $category_image['ID'], 'large' ); ?>
-						<?php else : ?>
-							<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" alt="<?= esc_attr( $product_category->name ); ?>">
-						<?php endif; ?>
-						<div class="product-nav__overlay"></div>
-						<h3><?php echo esc_html( $product_category->name ); ?></h3>
+				<div class="col-md-3">
+					<a class="lc-nav-cards__link" href="<?php echo esc_url( $category_link ); ?>">
+						<div class="lc-nav-cards__media">
+							<?php if ( ! empty( $category_image['ID'] ) ) : ?>
+								<?= wp_get_attachment_image( $category_image['ID'], 'large' ); ?>
+							<?php else : ?>
+								<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" alt="<?= esc_attr( $product_category->name ); ?>">
+							<?php endif; ?>
+							<div class="lc-nav-cards__overlay"></div>
+						</div>
+						<div class="lc-nav-cards__title-wrap">
+							<h3><?php echo esc_html( $product_category->name ); ?></h3>
+						</div>
 					</a>
 				</div>
 					<?php

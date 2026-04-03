@@ -1,0 +1,57 @@
+.lc-nav-cards {
+  &__link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    box-shadow: var(--shadow-2);
+    transition: all var(--transition);
+    background-color: #fff;
+
+    &:hover {
+      box-shadow: var(--shadow-1);
+      transform: translateY(2px);
+      color: inherit;
+    }
+  }
+
+  &__media {
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    display: grid;
+    grid-template-areas: "stack";
+    isolation: isolate;
+
+    img {
+      aspect-ratio: 4 / 3;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+      grid-area: stack;
+      z-index: -1;
+    }
+  }
+
+  &__overlay {
+    grid-area: stack;
+    width: 100%;
+    height: 100%;
+    background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg id='Layer_2' data-name='Layer 2' xmlns='http://www.w3.org/2000/svg' viewBox='0 0 380.11 93'%3E%3Cdefs%3E%3Cstyle%3E .cls-1 %7B fill: %23005c6d; opacity: .5; %7D %3C/style%3E%3C/defs%3E%3Cg id='Layer_1-2' data-name='Layer 1'%3E%3Cg%3E%3Cpolygon class='cls-1' points='333.53 93 0 0 0 93 333.53 93'/%3E%3Cpolygon class='cls-1' points='380.11 93 0 0 0 93 380.11 93'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: bottom;
+    background-size: contain;
+    z-index: 0;
+  }
+
+  &__title-wrap {
+    background-color: hsl(var(--hsl-blue-600) / 0.8);
+    padding: 0.75rem;
+  }
+
+  h3 {
+    color: var(--col-white);
+    font-size: var(--fs-500);
+    font-weight: var(--fw-bold);
+    margin: 0;
+  }
+}

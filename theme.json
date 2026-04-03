@@ -18,9 +18,27 @@
           "origin": "theme"
         },
         {
+          "name": "grey-100",
+          "slug": "grey-100",
+          "color": "hsl(220, 1%, 98%)",
+          "origin": "theme"
+        },
+        {
+          "name": "grey-200",
+          "slug": "grey-200",
+          "color": "hsl(220, 1%, 90%)",
+          "origin": "theme"
+        },
+        {
           "name": "grey",
           "slug": "grey",
           "color": "#929395",
+          "origin": "theme"
+        },
+        {
+          "name": "blue-50",
+          "slug": "blue-50",
+          "color": "#eef7f9",
           "origin": "theme"
         },
         {
@@ -33,6 +51,18 @@
           "name": "blue-600",
           "slug": "blue-600",
           "color": "#005c6d",
+          "origin": "theme"
+        },
+        {
+          "name": "blue-700",
+          "slug": "blue-700",
+          "color": "#014753",
+          "origin": "theme"
+        },
+        {
+          "name": "blue-900",
+          "slug": "blue-900",
+          "color": "#01363f",
           "origin": "theme"
         },
         {

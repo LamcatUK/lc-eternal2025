@@ -1,5 +1,5 @@
 {
-  "key": "group_635fb286b240c",
+  "key": "group_site_wide_settings",
   "title": "Site-Wide Settings",
   "fields": [
     {
@@ -19,6 +19,91 @@
       "placement": "top",
       "endpoint": 0,
       "selected": 0
+    },
+    {
+      "key": "field_6731f12ebc040",
+      "label": "CTA Title",
+      "name": "cta_title",
+      "aria-label": "",
+      "type": "text",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "allow_in_bindings": 0,
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_6731f116c4e09",
+      "label": "CTA Content",
+      "name": "cta_content",
+      "aria-label": "",
+      "type": "textarea",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "allow_in_bindings": 0,
+      "rows": 4,
+      "placeholder": "",
+      "new_lines": "br"
+    },
+    {
+      "key": "field_6731f13ebc041",
+      "label": "CTA Link",
+      "name": "cta_link",
+      "aria-label": "",
+      "type": "link",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "array",
+      "allow_in_bindings": 0
+    },
+    {
+      "key": "field_67b8702a0b404",
+      "label": "CTA Background",
+      "name": "cta_background",
+      "aria-label": "",
+      "type": "image",
+      "instructions": "",
+      "required": 0,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "id",
+      "library": "all",
+      "min_width": "",
+      "min_height": "",
+      "min_size": "",
+      "max_width": "",
+      "max_height": "",
+      "max_size": "",
+      "mime_types": "",
+      "allow_in_bindings": 0,
+      "preview_size": "thumbnail"
     },
     {
       "key": "field_638e002809b81",
@@ -278,5 +363,5 @@
   "description": "",
   "show_in_rest": 0,
   "display_title": "",
-  "modified": 1765132260
+  "modified": 1775220164
 }

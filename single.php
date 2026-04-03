@@ -117,11 +117,9 @@ get_header();
 						<?php
 					}
 					?>
-					<div class="sidebar-insights__cta mt-3 d-none d-lg-block">
-						<div class="d-flex gap-3 justify-content-center align-items-center phone-email">
-							<a href="<?= esc_url( 'tel:' . parse_phone( get_field( 'phone', 'option' ) ) ); ?>" class="button button-primary"><i class="fas fa-phone"></i> Call</a>
-							<a href="<?= esc_url( 'mailto:' . antispambot( get_field( 'email', 'option' ) ) ); ?>" class="button button-primary"><i class="fas fa-paper-plane"></i> Email</a>
-						</div>
+					<div class="d-none d-lg-flex gap-3 justify-content-center align-items-center phone-email">
+						<a href="<?= esc_url( 'tel:' . parse_phone( get_field( 'phone', 'option' ) ) ); ?>" class="ep-button ep-button--primary ep-button--sm"><i class="fas fa-phone"></i>&nbsp; Call</a>
+						<a href="<?= esc_url( 'mailto:' . antispambot( get_field( 'email', 'option' ) ) ); ?>" class="ep-button ep-button--primary ep-button--sm"><i class="fas fa-paper-plane"></i>&nbsp; Email</a>
 					</div>
 				</div>
 			</div>

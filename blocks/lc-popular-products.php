@@ -15,13 +15,12 @@ if ( empty( $products ) || ! is_array( $products ) ) {
 
 $title              = get_field( 'title' );
 $content            = get_field( 'content' );
-$background         = get_field( 'background' );
-$background_class   = $background ? 'has-' . sanitize_html_class( $background ) . '-background-color' : 'has-white-background-color';
+
 $class_name         = $block['className'] ?? '';
 $anchor             = $block['anchor'] ?? '';
 $block_id           = 'lc-popular-products-' . $block['id'];
 $archive_link       = get_post_type_archive_link( 'product' );
-$section_attributes = 'class="lc-popular-products py-5 ' . esc_attr( trim( $background_class . ' ' . $class_name ) ) . '"';
+$section_attributes = 'class="lc-popular-products py-5 ' . esc_attr( $class_name ) . '"';
 
 if ( $anchor ) {
 	$section_attributes .= ' id="' . esc_attr( $anchor ) . '"';
@@ -30,11 +29,11 @@ if ( $anchor ) {
 <section <?= $section_attributes; ?>>
 	<div class="container">
 		<?php if ( $title ) : ?>
-			<h2 class="text-center"><?= esc_html( $title ); ?></h2>
+			<h2 class=""><?= esc_html( $title ); ?></h2>
 		<?php endif; ?>
 
 		<?php if ( $content ) : ?>
-			<div class="text-center mb-4"><?= wp_kses_post( wpautop( $content ) ); ?></div>
+			<div class="larger mb-5"><?= wp_kses_post( wpautop( $content ) ); ?></div>
 		<?php endif; ?>
 
 		<div class="splide lc-popular-products__slider mb-4" id="<?= esc_attr( $block_id ); ?>">
@@ -44,35 +43,33 @@ if ( $anchor ) {
 						<?php
 						$sku          = get_the_title( $product_id );
 						$product_name = lc_get_product_display_name( $product_id );
-						$description  = get_field( 'description', $product_id );
 						$material     = get_field( 'material', $product_id );
-						$size         = get_field( 'size', $product_id );
-						$size_units   = get_field( 'size_units', $product_id );
+						$size         = trim( get_field( 'size', $product_id ) . ' ' . get_field( 'size_units', $product_id ) );
 						$colour       = get_field( 'colour', $product_id );
-						$pack_size    = get_field( 'pack_size', $product_id );
+						$details      = array_filter(
+							array(
+								$material,
+								$size,
+								$colour,
+							)
+						);
 						?>
 						<li class="splide__slide">
-							<a class="card h-100 lc-popular-products__card" href="<?= esc_url( get_permalink( $product_id ) ); ?>">
-								<?php if ( has_post_thumbnail( $product_id ) ) : ?>
-									<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'medium' ) ); ?>" class="card-img-top lc-popular-products__image" alt="<?= esc_attr( $product_name ); ?>">
-								<?php else : ?>
-									<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" class="card-img-top lc-popular-products__image" alt="<?= esc_attr( $product_name ); ?>">
-								<?php endif; ?>
-
-								<div class="card-body d-flex flex-column">
-									<h3 class="card-title h5 mb-2"><?= esc_html( $product_name ); ?></h3>
-
-									<?php if ( $description ) : ?>
-										<p class="card-text mb-3"><?= esc_html( wp_trim_words( wp_strip_all_tags( $description ), 18 ) ); ?></p>
+							<a class="lc-product-card lc-popular-products__card" href="<?= esc_url( get_permalink( $product_id ) ); ?>">
+								<div class="lc-product-card__image">
+									<?php if ( has_post_thumbnail( $product_id ) ) : ?>
+										<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'medium' ) ); ?>" alt="<?= esc_attr( $product_name ); ?>">
+									<?php else : ?>
+										<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" alt="<?= esc_attr( $product_name ); ?>">
 									<?php endif; ?>
+								</div>
 
-									<ul class="list-unstyled mb-0 small lc-popular-products__meta">
-										<li><strong>Material:</strong> <?= esc_html( $material ? $material : '-' ); ?></li>
-										<li><strong>Size:</strong> <?= esc_html( $size ? trim( $size . ' ' . $size_units ) : '-' ); ?></li>
-										<li><strong>Colour:</strong> <?= esc_html( $colour ? $colour : '-' ); ?></li>
-										<li><strong>Pack Size:</strong> <?= esc_html( $pack_size ? $pack_size : '-' ); ?></li>
-										<li><strong>SKU:</strong> <?= esc_html( $sku ); ?></li>
-									</ul>
+								<div class="lc-product-card__body">
+									<h3 class="lc-product-card__title"><?= esc_html( $product_name ); ?></h3>
+									<p class="lc-product-card__sku"><?= esc_html( $sku ); ?></p>
+									<?php if ( ! empty( $details ) ) : ?>
+										<p class="lc-product-card__meta text-muted small lc-popular-products__meta"><?= esc_html( implode( ' • ', $details ) ); ?></p>
+									<?php endif; ?>
 								</div>
 							</a>
 						</li>
@@ -83,7 +80,7 @@ if ( $anchor ) {
 
 		<?php if ( $archive_link ) : ?>
 			<div class="text-center">
-				<a href="<?= esc_url( $archive_link ); ?>" class="btn btn-primary">All products</a>
+				<a href="<?= esc_url( $archive_link ); ?>" class="ep-button ep-button--primary">All products</a>
 			</div>
 		<?php endif; ?>
 	</div>

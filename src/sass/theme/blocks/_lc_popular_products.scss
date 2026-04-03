@@ -1,6 +1,10 @@
 .lc-popular-products {
+  background-image: url(../img/abstract-bg-2.jpg);
+  background-size: cover;
+  background-position: center;
+
   .splide__track {
-    padding-block: 0.5rem;
+    padding: 0 1.15rem 2rem 1.15rem;
   }
 
   .splide__slide {
@@ -13,26 +17,7 @@
     }
   }
 
-  &__card {
-    color: inherit;
-    text-decoration: none;
-    transition:
-      transform 0.25s ease,
-      box-shadow 0.25s ease;
-
-    &:hover,
-    &:focus {
-      transform: translateY(-4px);
-      box-shadow: 0 1rem 2rem rgba(0, 0, 0, 0.12);
-    }
-  }
-
-  &__image {
-    aspect-ratio: 4 / 3;
-    object-fit: cover;
-  }
-
-  &__meta li + li {
-    margin-top: 0.35rem;
+  &__meta {
+    margin-bottom: 0;
   }
 }

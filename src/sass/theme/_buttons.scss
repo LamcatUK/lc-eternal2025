@@ -1,76 +1,81 @@
 .ep-button {
-    --btn-bg: var(--col-blue-600);
-    --btn-cl: var(--col-white);
-    --btn-bg-hover: var(--col-blue-400);
-    --btn-cl-hover: var(--col-white);
+  --btn-bg: var(--col-blue-600);
+  --btn-cl: var(--col-white);
+  --btn-bg-hover: var(--col-blue-700);
+  --btn-cl-hover: var(--col-white);
+  --btn-stroke: var(--col-blue-700);
+  --btn-stroke-hover: var(--col-blue-900);
 
-    color: var(--btn-cl);
-    font-weight: var(--fw-bold);
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    padding: 0.6rem 1.8rem;
-    background: var(--btn-bg);
-    -webkit-mask: url('../img/button-clip.svg') center / 100% 100% no-repeat;
-            mask: url('../img/button-clip.svg') center / 100% 100% no-repeat;
-    border: none;
-    display: inline-block;
-    text-decoration: none;
-    position: relative;
-    transition: background 0.2s ease, color 0.2s ease, top 0.2s ease;
-    top: 0;
+  color: var(--btn-cl);
+  font-size: var(--fs-300);
+  font-weight: var(--fw-bold);
+  letter-spacing: 0.075em;
+  text-transform: uppercase;
+  padding: 0.75rem 2rem;
+  min-width: 11rem;
+  background-color: var(--btn-bg);
+  border: 1px solid var(--btn-stroke);
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  box-shadow: 0 0.35rem 0.9rem rgba(0, 0, 0, 0.14);
+}
+
+.ep-button--sm {
+  min-width: unset;
 }
 
 .ep-button:hover,
 .ep-button:focus {
-    background: var(--btn-bg-hover);
-    color: var(--btn-cl-hover);
-    top: 2px;
+  background-color: var(--btn-bg-hover);
+  border-color: var(--btn-stroke-hover);
+  color: var(--btn-cl-hover);
+  transform: translateY(2px);
 }
 
 .ep-button--secondary {
-    --btn-stroke: var(--col-grey);
-    --btn-stroke-hover: var(--col-grey);
-    --btn-bg-hover: var(--col-grey);
-    --btn-cl-hover: var(--col-white);
+  --btn-bg: transparent;
+  --btn-cl: var(--col-blue-600);
+  --btn-stroke: hsl(189 100% 21% / 0.7);
+  --btn-stroke-hover: hsl(189 100% 21% / 0.85);
+  --btn-bg-hover: var(--col-blue-50);
+  --btn-cl-hover: var(--col-blue-700);
 
-    color: var(--btn-stroke);
-    background: transparent;
-    position: relative;
-
-    -webkit-mask: url('../img/button-clip.svg') center / 100% 100% no-repeat;
-            mask: url('../img/button-clip.svg') center / 100% 100% no-repeat;
-}
-
-.ep-button--secondary::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-
-    /* draw the stroke shape */
-    -webkit-mask: url('../img/button-outline.svg') center / 100% 100% no-repeat;
-            mask: url('../img/button-outline.svg') center / 100% 100% no-repeat;
-
-    background-color: var(--btn-stroke);
-    pointer-events: none;
+  background-color: transparent;
+  box-shadow: none;
 }
 
 .ep-button--secondary:hover,
 .ep-button--secondary:focus {
-    color: var(--btn-cl-hover);
-}
-
-.ep-button--secondary:hover::after,
-.ep-button--secondary:focus::after {
-    background-color: var(--btn-stroke-hover);
+  color: var(--btn-cl-hover);
 }
 
 .ep-button--secondary-white {
-    --btn-stroke: var(--col-white);
-    --btn-stroke-hover: var(--col-white);
-    --btn-cl: var(--col-white);
-    --btn-cl-hover: var(--col-white);
+  --btn-stroke: hsl(0 0% 100% / 0.72);
+  --btn-stroke-hover: hsl(0 0% 100% / 0.88);
+  --btn-cl: hsl(0 0% 100% / 0.86);
+  --btn-cl-hover: var(--col-white);
+  --btn-bg-hover: hsl(0 0% 100% / 0.08);
 }
 
+.btn-primary {
+  color: var(--col-white) !important;
+  background-color: var(--col-blue-600) !important;
+  border-color: var(--col-blue-700) !important;
+  &:hover {
+    color: var(--col-white) !important;
+    background-color: var(--col-blue-700) !important;
+    border-color: var(--col-blue-900) !important;
+  }
+}
 
 /*
 

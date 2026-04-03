@@ -1,10 +1,10 @@
 {
-    "key": "group_lc_blog_cta",
-    "title": "LC Blog CTA",
+    "key": "group_lc_sectors_nav",
+    "title": "LC Sectors Nav",
     "fields": [
         {
-            "key": "field_lc_blog_cta_title",
-            "label": "LC Blog CTA",
+            "key": "field_lc_sectors_nav_title",
+            "label": "LC Sectors Nav",
             "name": "",
             "aria-label": "",
             "type": "message",
@@ -21,7 +21,7 @@
             "new_lines": "wpautop"
         },
         {
-            "key": "field_693094f8e4f31",
+            "key": "field_69cfb8103c25b",
             "label": "Title",
             "name": "title",
             "aria-label": "",
@@ -42,9 +42,9 @@
             "append": ""
         },
         {
-            "key": "field_6930950ae4f32",
-            "label": "Description",
-            "name": "description",
+            "key": "field_69cfb81c3c25c",
+            "label": "Content",
+            "name": "content",
             "aria-label": "",
             "type": "textarea",
             "instructions": "",
@@ -61,23 +61,6 @@
             "rows": 4,
             "placeholder": "",
             "new_lines": "br"
-        },
-        {
-            "key": "field_6930951de4f33",
-            "label": "Button",
-            "name": "button",
-            "aria-label": "",
-            "type": "link",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array",
-            "allow_in_bindings": 0
         }
     ],
     "location": [
@@ -85,7 +68,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/lc-blog-cta"
+                "value": "acf\/lc-sectors-nav"
             }
         ]
     ],
@@ -99,5 +82,7 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1764791588
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1775220783
 }

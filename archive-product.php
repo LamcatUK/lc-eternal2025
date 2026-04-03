@@ -62,7 +62,7 @@ $product_categories = get_terms(
 				</div>
 				<div class="col-md-2 d-grid">
 					<label class="form-label invisible">Reset</label>
-					<button id="resetFilters" class="btn btn-secondary">Reset Filters</button>
+					<button id="resetFilters" class="btn btn-primary">Reset Filters</button>
 				</div>
 				<div class="col-2">
 					<div class="product-browser__switcher" role="group" aria-label="Product view switcher">
