@@ -27,7 +27,7 @@ $content = get_field( 'intro' );
 			<h2 class="has-white-color mb-4"><?= esc_html( $title ); ?></h2>
 		<?php endif; ?>
 		<?php if ( $content ) : ?>
-			<div class="larger mb-5"><?= wp_kses_post( wpautop( $content ) ); ?></div>
+			<div class="has-white-color larger mb-5"><?= wp_kses_post( wpautop( $content ) ); ?></div>
 		<?php endif; ?>
 		<nav class="product-nav__inner" aria-label="Product Navigation">
 			<div class="row g-4">
