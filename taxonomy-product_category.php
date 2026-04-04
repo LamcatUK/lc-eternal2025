@@ -46,9 +46,16 @@ $products = new WP_Query(
 		<div class="hero__overlay"></div>
 		<div class="hero__content d-flex align-items-center">
 			<div class="container">
-				<div class="row">
+				<div class="row align-items-center g-4">
 					<div class="col-lg-8 text-white">
 						<h1 class="hero__title"><?= esc_html( $term->name ); ?></h1>
+					</div>
+					<div class="col-lg-4 d-none d-lg-block">
+						<?php
+						if ( get_field( 'hero_image', $term ) ) {
+							echo wp_get_attachment_image( get_field( 'hero_image', $term ), 'full', false, array( 'class' => 'img-fluid rounded' ) );
+						}
+						?>
 					</div>
 				</div>
 			</div>
