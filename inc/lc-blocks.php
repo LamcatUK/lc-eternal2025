@@ -17,6 +17,40 @@ function acf_blocks() {
 
 		// INSERT NEW BLOCKS HERE.
 
+          acf_register_block_type(
+            array(
+              'name'            => 'lc_wide_map',
+              'title'           => __( 'LC Wide Map' ),
+              'category'        => 'layout',
+              'icon'            => 'cover-image',
+              'render_template' => 'blocks/lc-wide-map.php',
+              'mode'            => 'edit',
+              'supports'        => array(
+                'mode'      => false,
+                'anchor'    => true,
+                'className' => true,
+                'align'     => true,
+              ),
+            )
+          );
+
+          acf_register_block_type(
+            array(
+              'name'            => 'lc_contact',
+              'title'           => __( 'LC Contact' ),
+              'category'        => 'layout',
+              'icon'            => 'cover-image',
+              'render_template' => 'blocks/lc-contact.php',
+              'mode'            => 'edit',
+              'supports'        => array(
+                'mode'      => false,
+                'anchor'    => true,
+                'className' => true,
+                'align'     => true,
+              ),
+            )
+          );
+
 			acf_register_block_type(
 			array(
 				'name'            => 'lc_sectors_nav',
@@ -233,21 +267,6 @@ function acf_blocks() {
 				'category'        => 'layout',
 				'icon'            => 'excerpt-view',
 				'render_template' => 'blocks/lc-faq.php',
-				'mode'            => 'edit',
-				'supports'        => array(
-					'mode'   => false,
-					'anchor' => true,
-				),
-			)
-		);
-
-		acf_register_block_type(
-			array(
-				'name'            => 'lc_contact_map',
-				'title'           => 'LC Contact & Map',
-				'category'        => 'layout',
-				'icon'            => 'excerpt-view',
-				'render_template' => 'blocks/lc-contact-map.php',
 				'mode'            => 'edit',
 				'supports'        => array(
 					'mode'   => false,

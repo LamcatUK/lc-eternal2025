@@ -1,0 +1,23 @@
+{
+  "key": "group_lc_wide_map",
+  "title": "LC Wide Map",
+  "fields": [
+    {
+      "key": "field_lc_wide_map_title",
+      "label": "LC Wide Map",
+      "name": "title",
+      "type": "message"
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "acf/lc-wide-map"
+      }
+    ]
+  ],
+  "active": 1,
+  "description": ""
+}
