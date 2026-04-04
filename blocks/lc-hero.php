@@ -105,7 +105,7 @@ $block_id = 'lc-hero-' . $block['id'];
 					</div>
 					<?php
 					if ( is_front_page() ) {
-						echo '<img data-aos="fade" data-aos-delay="' . esc_attr( $d ) . '" src="' . esc_url( get_stylesheet_directory_uri() . '/img/brcgs_cert_packaging_logo_rgb.webp' ) . '" alt="BRCGS Certification" class="hero__brcgs" />';
+						echo '<img data-aos="fade" data-aos-delay="' . esc_attr( $d ) . '" src="' . esc_url( get_stylesheet_directory_uri() . '/img/brcgs_cert_packaging_logo_rgb.png' ) . '" alt="BRCGS Certification" class="hero__brcgs" />';
 					}
 					?>
 				</div>
