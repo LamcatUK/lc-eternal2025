@@ -1,0 +1,33 @@
+.lc-child-pages {
+  &__list {
+    display: grid;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__link {
+    display: block;
+    padding: 1rem 1.25rem;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: var(--radius-sm);
+    background-color: #fff;
+    color: var(--col-blue-600);
+    font-weight: var(--fw-bold);
+    text-decoration: none;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+
+    &:hover,
+    &:focus {
+      color: var(--col-blue-700);
+      border-color: var(--col-blue-600);
+      box-shadow: var(--shadow-1);
+      transform: translateY(-2px);
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
-    "key": "group_636127c55be7c",
-    "title": "LC Contact & Map",
+    "key": "group_69d11bcce3da1",
+    "title": "LC Child Pages",
     "fields": [
         {
-            "key": "field_636127c529fba",
-            "label": "LC Contact & Map",
+            "key": "field_69d11bcd08b1c",
+            "label": "LC Child Pages",
             "name": "",
             "aria-label": "",
             "type": "message",
@@ -16,7 +16,7 @@
                 "class": "",
                 "id": ""
             },
-            "message": "Uses values from Site-Wide Settings",
+            "message": "",
             "new_lines": "wpautop",
             "esc_html": 0
         }
@@ -26,7 +26,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "acf\/lc-contact-map"
+                "value": "acf\/lc-child-pages"
             }
         ]
     ],
@@ -40,5 +40,7 @@
     "description": "",
     "show_in_rest": 0,
     "display_title": "",
-    "modified": 1764521718
+    "allow_ai_access": false,
+    "ai_description": "",
+    "modified": 1775311843
 }
