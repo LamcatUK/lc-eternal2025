@@ -17,10 +17,18 @@ $product_categories = get_terms(
 	)
 );
 
+$title   = get_field( 'title' );
+$content = get_field( 'intro' );
+
 ?>
 <section class="product-nav lc-nav-cards">
 	<div class="container py-5">
-		<h2 class="has-white-color mb-4">Our products</h2>
+		<?php if ( $title ) : ?>
+			<h2 class="has-white-color mb-4"><?= esc_html( $title ); ?></h2>
+		<?php endif; ?>
+		<?php if ( $content ) : ?>
+			<div class="larger mb-5"><?= wp_kses_post( wpautop( $content ) ); ?></div>
+		<?php endif; ?>
 		<nav class="product-nav__inner" aria-label="Product Navigation">
 			<div class="row g-4">
 				<?php
