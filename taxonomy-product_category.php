@@ -222,7 +222,7 @@ $products = new WP_Query(
 	<?php
 	if ( ! empty( $term_faqs ) && is_array( $term_faqs ) ) {
 		?>
-		<section class="faq pb-5">
+		<section class="faq py-5">
 			<div class="container-xl">
 				<h2>Frequently Asked Questions</h2>
 				<div itemscope="" itemtype="https://schema.org/FAQPage" id="faqs" class="accordion accordion-flush">

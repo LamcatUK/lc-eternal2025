@@ -431,3 +431,123 @@ function lc_show_all_products_on_archive( WP_Query $query ): void {
 	}
 }
 add_action( 'pre_get_posts', 'lc_show_all_products_on_archive' );
+
+/**
+ * Normalize a menu item URL path for comparison.
+ *
+ * @param string $url Menu item URL.
+ * @return string
+ */
+function lc_normalize_menu_path( $url ) {
+	$path = wp_parse_url( (string) $url, PHP_URL_PATH );
+
+	if ( ! is_string( $path ) || '' === $path ) {
+		return '';
+	}
+
+	return trailingslashit( untrailingslashit( $path ) );
+}
+
+/**
+ * Add an item and its menu ancestors to the active branch list.
+ *
+ * @param array<int, WP_Post> $items      Menu items.
+ * @param int                 $item_id    Current item ID.
+ * @param array<int, bool>    $active_ids Active menu IDs.
+ * @return void
+ */
+function lc_add_menu_branch_ids( $items, $item_id, &$active_ids ) {
+	$item_lookup = array();
+
+	foreach ( $items as $item ) {
+		$item_lookup[ (int) $item->ID ] = $item;
+	}
+
+	$current_id = (int) $item_id;
+
+	while ( $current_id && isset( $item_lookup[ $current_id ] ) ) {
+		$active_ids[ $current_id ] = true;
+		$current_id               = (int) $item_lookup[ $current_id ]->menu_item_parent;
+	}
+}
+
+/**
+ * Force the correct active branch for product navigation items.
+ *
+ * @param array    $items Menu items.
+ * @param stdClass $args  Menu args.
+ * @return array
+ */
+function lc_force_product_menu_active_state( $items, $args ) {
+	if ( empty( $args->theme_location ) || 'primary_nav' !== $args->theme_location ) {
+		return $items;
+	}
+
+	if ( ! ( is_post_type_archive( 'product' ) || is_tax( 'product_category' ) || is_singular( 'product' ) ) ) {
+		return $items;
+	}
+
+	$product_archive_path = lc_normalize_menu_path( get_post_type_archive_link( 'product' ) );
+	$target_paths         = array();
+
+	if ( is_tax( 'product_category' ) ) {
+		$term_link = get_term_link( get_queried_object() );
+		if ( ! is_wp_error( $term_link ) ) {
+			$target_paths[] = lc_normalize_menu_path( $term_link );
+		}
+	}
+
+	if ( is_singular( 'product' ) ) {
+		$terms = get_the_terms( get_the_ID(), 'product_category' );
+		if ( ! is_wp_error( $terms ) && ! empty( $terms ) ) {
+			foreach ( $terms as $term ) {
+				$term_link = get_term_link( $term );
+				if ( ! is_wp_error( $term_link ) ) {
+					$target_paths[] = lc_normalize_menu_path( $term_link );
+				}
+			}
+		}
+	}
+
+	if ( is_post_type_archive( 'product' ) || empty( $target_paths ) ) {
+		$target_paths[] = $product_archive_path;
+	}
+
+	$target_paths = array_filter( array_unique( $target_paths ) );
+	$active_ids   = array();
+
+	foreach ( $items as $item ) {
+		$item_path = lc_normalize_menu_path( $item->url );
+
+		if ( in_array( $item_path, $target_paths, true ) || ( $product_archive_path && $item_path === $product_archive_path ) ) {
+			lc_add_menu_branch_ids( $items, (int) $item->ID, $active_ids );
+		}
+	}
+
+	if ( empty( $active_ids ) ) {
+		return $items;
+	}
+
+	$active_class_names = array(
+		'current-menu-item',
+		'current_page_item',
+		'current-menu-parent',
+		'current_page_parent',
+		'current-menu-ancestor',
+		'current_page_ancestor',
+	);
+
+	foreach ( $items as $item ) {
+		$item->classes = is_array( $item->classes ) ? array_diff( $item->classes, $active_class_names ) : array();
+
+		if ( isset( $active_ids[ (int) $item->ID ] ) ) {
+			$item->classes[] = 'current-menu-ancestor';
+			if ( (int) $item->menu_item_parent > 0 ) {
+				$item->classes[] = 'current-menu-item';
+			}
+		}
+	}
+
+	return $items;
+}
+add_filter( 'wp_nav_menu_objects', 'lc_force_product_menu_active_state', 20, 2 );

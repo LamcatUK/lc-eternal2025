@@ -22671,7 +22671,13 @@ header .header_flag {
 }
 header .current_page_item > .nav-link,
 header .current_page_parent > .nav-link,
-header .dropdown.current-page-ancestor > .nav-link,
+header .current_page_ancestor > .nav-link,
+header .current-menu-item > .nav-link,
+header .current-menu-parent > .nav-link,
+header .current-menu-ancestor > .nav-link,
+header .dropdown.current_page_ancestor > .nav-link,
+header .dropdown.current-menu-parent > .nav-link,
+header .dropdown.current-menu-ancestor > .nav-link,
 header .dropdown.current-menu-item > .nav-link {
   color: var(--col-amber-400);
 }
