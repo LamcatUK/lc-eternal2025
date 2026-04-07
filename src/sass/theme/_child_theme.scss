@@ -76,7 +76,6 @@ hr {
   }
 }
 
-
 :where(.wp-block-columns.has-background) {
   padding: 0;
 }
@@ -90,19 +89,23 @@ hr {
 }
 
 .lc-table {
-    border: 1px solid var(--col-blue-700);
-    th {
-        background-color: var(--col-blue-700);
-        color: white;
-        font-weight: 600;
-        width: 1%;
-        white-space: nowrap;
-    }
-    tr :not(:first-child) {
-        text-align: center;
-    }
-    td {
-        border-width: 1px;
-        background-color: var(--col-white);
-    }
+  border: 1px solid var(--col-blue-700);
+  th {
+    background-color: var(--col-blue-700);
+    color: white;
+    font-weight: 600;
+    width: 1%;
+    white-space: nowrap;
+  }
+  tr :not(:first-child) {
+    text-align: center;
+  }
+  td {
+    border-width: 1px;
+    background-color: var(--col-white);
+  }
+}
+
+.container > .wp-block-column > .container {
+  padding-inline: 0;
 }

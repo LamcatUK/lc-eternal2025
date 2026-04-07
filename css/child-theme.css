@@ -23741,6 +23741,10 @@ hr {
   background-color: var(--col-white);
 }
 
+.container > .wp-block-column > .container {
+  padding-inline: 0;
+}
+
 .has-blue-color,
 .has-blue-color:visited {
   color: #0d6efd;
