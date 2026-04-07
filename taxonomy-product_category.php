@@ -74,21 +74,23 @@ $products = new WP_Query(
 	}
 	?>
 
+<?php
+if ( $products->have_posts() ) {
+	?>
 	<!-- Products -->
 	<section class="products-by-category py-5">
 		<div class="container">
 			<h2 class="mb-4">Products in <?= esc_html( $term->name ); ?></h2>
-			<?php
-			if ( $term->description ) {
-				?>
+		<?php
+		if ( $term->description ) {
+			?>
 				<div class="category-description mb-4">
-					<?= wp_kses_post( wpautop( $term->description ) ); ?>
+				<?= wp_kses_post( wpautop( $term->description ) ); ?>
 				</div>
 				<?php
-			}
+		}
 
-			if ( $products->have_posts() ) {
-				?>
+		?>
 				<div class="row g-3 mb-4 align-items-end product-browser__toolbar">
 					<div class="col-md-4">
 						<label for="skuSearch" class="form-label">Search by Product Code</label>
@@ -111,18 +113,18 @@ $products = new WP_Query(
 				<div class="product-browser product-browser--taxonomy" data-default-view="grid">
 					<div class="products-grid-view">
 						<div class="row g-4" id="productGridCards">
-							<?php
-							while ( $products->have_posts() ) {
-								$products->the_post();
-								$product_id   = get_the_ID();
-								$sku          = get_the_title();
-								$product_name = lc_get_product_display_name( $product_id );
-								$material     = get_field( 'material', $product_id );
-								$size         = get_field( 'size', $product_id );
-								$size_units   = get_field( 'size_units', $product_id );
-								$colour       = get_field( 'colour', $product_id );
-								$size_label   = trim( $size . ' ' . $size_units );
-								?>
+						<?php
+						while ( $products->have_posts() ) {
+							$products->the_post();
+							$product_id   = get_the_ID();
+							$sku          = get_the_title();
+							$product_name = lc_get_product_display_name( $product_id );
+							$material     = get_field( 'material', $product_id );
+							$size         = get_field( 'size', $product_id );
+							$size_units   = get_field( 'size_units', $product_id );
+							$colour       = get_field( 'colour', $product_id );
+							$size_label   = trim( $size . ' ' . $size_units );
+							?>
 								<div class="col-md-6 col-xl-3 product-browser__item product-browser__item--grid" data-sku="<?= esc_attr( $sku ); ?>">
 									<a href="<?= esc_url( get_permalink() ); ?>" class="product-browser__card text-decoration-none">
 										<div class="product-browser__card-header">
@@ -131,7 +133,7 @@ $products = new WP_Query(
 										<div class="product-browser__card-body">
 											<div class="product-browser__card-layout">
 												<div class="product-browser__card-image">
-													<?php if ( has_post_thumbnail() ) : ?>
+												<?php if ( has_post_thumbnail() ) : ?>
 														<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'medium' ) ); ?>" alt="<?= esc_attr( $product_name ); ?>">
 													<?php else : ?>
 														<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" alt="<?= esc_attr( $product_name ); ?>">
@@ -140,7 +142,7 @@ $products = new WP_Query(
 												<div class="product-browser__card-meta small">
 													<div><strong>Size:</strong> <?= esc_html( $size_label ? $size_label : '-' ); ?></div>
 													<div><strong>Material:</strong> <?= esc_html( $material ? $material : '-' ); ?></div>
-													<?php if ( $colour ) : ?>
+												<?php if ( $colour ) : ?>
 														<div><strong>Colour:</strong> <?= esc_html( $colour ); ?></div>
 													<?php endif; ?>
 													<div class="product-browser__sku text-muted"><?= esc_html( $sku ); ?></div>
@@ -150,9 +152,9 @@ $products = new WP_Query(
 									</a>
 								</div>
 								<?php
-							}
-							wp_reset_postdata();
-							?>
+						}
+						wp_reset_postdata();
+						?>
 						</div>
 					</div>
 
@@ -169,21 +171,21 @@ $products = new WP_Query(
 							</tr>
 						</thead>
 						<tbody>
-							<?php
-							rewind_posts();
-							while ( $products->have_posts() ) {
-								$products->the_post();
-								$product_id   = get_the_ID();
-								$sku          = get_the_title();
-								$product_name = lc_get_product_display_name( $product_id );
-								$material     = get_field( 'material', $product_id );
-								$size         = get_field( 'size', $product_id );
-								$size_units   = get_field( 'size_units', $product_id );
-								$size_label   = trim( $size . ' ' . $size_units );
-								?>
+						<?php
+						rewind_posts();
+						while ( $products->have_posts() ) {
+							$products->the_post();
+							$product_id   = get_the_ID();
+							$sku          = get_the_title();
+							$product_name = lc_get_product_display_name( $product_id );
+							$material     = get_field( 'material', $product_id );
+							$size         = get_field( 'size', $product_id );
+							$size_units   = get_field( 'size_units', $product_id );
+							$size_label   = trim( $size . ' ' . $size_units );
+							?>
 								<tr class="product-card" data-sku="<?= esc_attr( $sku ); ?>">
 									<td>
-										<?php if ( has_post_thumbnail() ) : ?>
+									<?php if ( has_post_thumbnail() ) : ?>
 											<img src="<?= esc_url( get_the_post_thumbnail_url( $product_id, 'thumbnail' ) ); ?>" width="50" height="50" style="object-fit:cover;border-radius:4px;" alt="<?= esc_attr( $product_name ); ?>">
 										<?php else : ?>
 											<img src="<?= esc_url( get_stylesheet_directory_uri() . '/img/default-product.jpg' ); ?>" width="50" height="50" style="object-fit:cover;border-radius:4px;" alt="">
@@ -200,24 +202,19 @@ $products = new WP_Query(
 									</td>
 								</tr>
 								<?php
-							}
-							wp_reset_postdata();
-							?>
+						}
+						wp_reset_postdata();
+						?>
 						</tbody>
 					</table>
 				</div>
 				</div>
-				<?php
-			} else {
-				?>
-				<p>No products found in this category.</p>
-				<?php
-			}
-			?>
 
 		</div>
 	</section>
-
+		<?php
+}
+?>
 	<!-- FAQ CONTENT HERE -->
 	<?php
 	if ( ! empty( $term_faqs ) && is_array( $term_faqs ) ) {
@@ -252,6 +249,8 @@ $products = new WP_Query(
 		</section>
 		<?php
 	}
+	// include lc-cta block.
+	get_template_part( 'blocks/lc-cta' );
 	?>
 
 </main>
