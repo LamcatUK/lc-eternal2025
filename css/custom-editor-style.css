@@ -5652,14 +5652,14 @@ body.understrap-no-sidebar .alignwide,
 body.understrap-no-sidebar .wp-block-cover.alignwide {
   margin: 0 calc(50% - 45vw);
   max-width: 90vw;
-  width: 100vw;
+  width: 90vw;
 }
 @media (max-width: 920px) {
   body.understrap-no-sidebar .alignwide,
   body.understrap-no-sidebar .wp-block-cover.alignwide {
     margin: 0 calc(50% - 48vw);
     max-width: 96vw;
-    width: 100vw;
+    width: 96vw;
   }
 }
 

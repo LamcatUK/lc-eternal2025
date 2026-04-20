@@ -47,6 +47,7 @@ $products = new WP_Query(
 		
 		<?php if ( $products->have_posts() ) : ?>
 			<div class="products-grid">
+				<div class="table-responsive">
 				<table class="table table-striped table-hover">
 					<thead>
 						<tr>
@@ -101,6 +102,7 @@ $products = new WP_Query(
 						?>
 					</tbody>
 				</table>
+				</div>
 			</div>
 		<?php else : ?>
 			<p>No products found in this category.</p>

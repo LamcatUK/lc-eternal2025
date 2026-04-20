@@ -89,6 +89,7 @@ get_header();
 				<div class="single-product__details">
 					<h2 class="h4 mb-3">Product Details</h2>
 					
+					<div class="table-responsive">
 					<table class="table table-bordered">
 						<tbody>
 							<?php
@@ -215,7 +216,8 @@ get_header();
 							?>
 						</tbody>
 					</table>
-					<a href="/contact-us/" class="ep-button ep-button--primary mt-3">Contact Us</a>
+				</div>
+				<a href="/contact-us/" class="ep-button ep-button--primary mt-3">Contact Us</a>
 				</div>
 			</div>
 		</div>

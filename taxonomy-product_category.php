@@ -159,6 +159,7 @@ if ( $products->have_posts() ) {
 					</div>
 
 					<div class="products-grid products-row-view d-none">
+					<div class="table-responsive">
 					<table class="table table-striped table-hover">
 						<thead>
 							<tr>
@@ -207,6 +208,7 @@ if ( $products->have_posts() ) {
 						?>
 						</tbody>
 					</table>
+					</div>
 				</div>
 				</div>
 

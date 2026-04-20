@@ -34,8 +34,8 @@ if ( $anchor ) {
 	<?php
 }
 
-$text_aos  = 'Text/Image' === $order_field ? 'fade-right' : 'fade-left';
-$image_aos = 'Text/Image' === $order_field ? 'fade-left' : 'fade-right';
+$text_aos  = 'fade-up';
+$image_aos = 'fade-up';
 
 $overlay       = get_field( 'image_overlay' );
 $overlay_class = $overlay && in_array( 'Yes', (array) $overlay, true ) ? 'has-overlay' : '';

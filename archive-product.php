@@ -126,9 +126,10 @@ $product_categories = get_terms(
 					</div>
 				</div>
 
-				<!-- Products Table -->
-				<div class="products-grid products-row-view d-none">
-				<table class="table table-striped table-hover">
+			<!-- Products Table -->
+			<div class="products-grid products-row-view d-none">
+			<div class="table-responsive">
+			<table class="table table-striped table-hover">
 					<thead>
 						<tr>
 							<th style="width:66px;"></th>
@@ -182,6 +183,7 @@ $product_categories = get_terms(
 						?>
 					</tbody>
 				</table>
+			</div>
 			</div>
 			</div>
 

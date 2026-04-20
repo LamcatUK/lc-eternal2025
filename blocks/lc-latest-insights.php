@@ -13,7 +13,7 @@ $fg = ! empty( $block['textColor'] ) ? 'has-' . $block['textColor'] . '-color' :
 ?>
 <section class="latest-insights py-5 <?php echo esc_attr( $bg ); ?> <?php echo esc_attr( $fg ); ?>">
 	<div class="container">
-		<div class="d-flex justify-content-between mb-4 align-items-center">
+		<div class="d-flex flex-wrap justify-content-between mb-4 align-items-center">
 			<h2>Latest Insights</h2>
 			<a class="ep-button ep-button--secondary align-self-center"
 				href="<?= esc_url( get_permalink( get_option( 'page_for_posts' ) ) ); ?>">
